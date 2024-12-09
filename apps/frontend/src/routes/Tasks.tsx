@@ -6,3 +6,5 @@ const TaskRouter = () =>  (
         <Route path='/tasks' element={<TaskView />}/>
     </Routes>
 )
+
+export default TaskRouter;

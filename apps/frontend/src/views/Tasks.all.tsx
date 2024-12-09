@@ -1,4 +1,6 @@
 import Nav from '../components/Nav';
+import '../assets/css/styles.css';
+// import '../assets/css/forms.css';
 
 const AllTasks = ({tasks}) => {
     const date  = new Date().toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -9,7 +11,6 @@ const AllTasks = ({tasks}) => {
        <Nav />
         <div className="container-body">
             <form className="search" action="/tasks/search" method="post">
-                @csrf
                 <input placeholder="Search tasks" type="text" name="search"/>
                 <button type="submit"> Search</button>
             </form>
@@ -17,7 +18,7 @@ const AllTasks = ({tasks}) => {
                 Welcome back,  Alain Christian!  &#128075;
             </p>
             <p className="date">Today, {date}</p>
-                { tasks.map(task => {
+                {tasks ? tasks.map(task => {
                     <a className="task-links" href="/tasks/{{$task->id}}">
                         <div className="task">
                             <div className="task-body">
@@ -34,10 +35,7 @@ const AllTasks = ({tasks}) => {
                             </div>
                         </div>
                     </a>
-                })}
-                    <div className="pagination">
-                    
-                    </div>
+                }): <span>No current tasks</span>}
         </div>
        
     </div>

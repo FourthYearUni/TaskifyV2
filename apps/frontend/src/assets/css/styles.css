@@ -1,0 +1,196 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.css");
+
+body {
+    background-color: #ebeff5;
+
+}
+h1 {
+
+}
+a {
+    text-decoration: none;
+    color: lightsalmon;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100vw;
+}
+
+.task {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1em;
+    background-color: white;
+    cursor: pointer;
+    width: 80%;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+
+li {
+    margin-left: 2em;
+}
+
+.horizontal-container {
+    background-color: bisque;
+}
+
+.task-body {
+    display: flex;
+    flex-direction: "row";
+    margin-left: 2em;
+    justify-content: space-between;
+    width: 100%;
+    font-family: Figtree, system-ui;
+
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+}
+
+.check {
+    transform: scale(2.0);
+    margin-left: 2em;
+}
+
+.farleft {
+    width: 50%;
+    font-family: Figtree system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+
+}
+.farleft p:nth-child(2){
+    color: grey;
+}
+
+.farright {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2em;
+
+}
+.farright p {
+    background-color: #ebeff5;
+    padding: .8em;
+    border-radius: 10px;
+    font-family: Figtree, system-ui;
+    margin-left: 1%;
+}
+.container-body {
+    width: 75%;
+}
+
+.container-nav {
+    font-family: Figtree, system-ui;
+    width: 20%;
+    background-color: white;
+    display: flex;
+    /*justify-content: center;*/
+    flex-direction: column;
+    border-radius: 20px;
+    margin: 1.5em;
+    position: sticky;
+    top:0;
+    height: 50vh;
+    /*overflow-y: auto;*/
+
+}
+.greeting {
+    font-family: Figtree, system-ui;
+    font-size: large;
+}
+.date {
+    font-family: Figtree, system-ui;
+    color: grey;
+}
+
+.nav-header {
+    margin-left: 10%;
+    font-size: larger;
+    font-weight: bolder;
+}
+.nav-body {
+    margin-left: 10%;
+    display: flex;
+    flex-direction: column;
+}
+.nav-body a {
+    color: #18181b;
+    margin-bottom: 1em;
+}
+.search {
+    /*margin-left: 20%;*/
+    position: sticky;
+    top: 0;
+}
+.search input {
+    padding: 1%;
+    width: 60%;
+    border-radius: 10px;
+    border-color: white;
+}
+.search input:active {
+    border-color: lightcoral;
+}
+.search button {
+    padding: 1%;
+    border-radius: 10px;
+    border-color: lightcoral;
+    background-color: lightcoral;
+    color: white;
+}
+
+.nav-footer {
+    margin-left: 10%;
+    margin-top: 40%;
+    color: grey;
+}
+.task-links {
+    color: black;
+}
+.action {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1em;
+    width: 90%;
+    height: 30%;
+}
+
+.btn-delete{
+    margin-right: 30%;
+    padding: 25%;
+    border-radius: 10%;
+    /*width: 90%;*/
+    background-color: lightcoral;
+    color: white;
+    border-color: lightcoral;
+}
+.pagination{
+    font-family: Figtree, system-ui;
+}
+.p-error {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: lightcoral;
+}
+
+.chevron {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.error-box {
+    color: red;
+    font-family: Figtree, system-ui;
+
+}
