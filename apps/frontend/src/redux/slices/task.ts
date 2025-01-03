@@ -4,12 +4,10 @@
  */
 
 // Core libs
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ActionReducerMapBuilder, AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Helpers and utilities
-import { fetcher } from '../../helpers/fetch';
-import env from '../../env';
-import { GetAllTasks } from '../../api/tasks';
+import { GetAllTasks, GetSingleTask } from '../../api/tasks';
 
 // Interfaces
 export interface Task {
@@ -35,15 +33,37 @@ const InitialState: TaskState = {
     error: null
 };
 
-// Async thunk
+// Async thunks
 export const fetchTasks = createAsyncThunk<Task[]>('tasks/fetchTasks', async () => {
-    console.log("Fetching tasks");
-    console.log("API URL: ", env.API_URL);
     const response = await GetAllTasks();
-    console.log("Response: ", response);
     return response as Task[];
 });
 
+export const fetchSingleTask = createAsyncThunk<Task, number>('tasks/fetchSingleTask', async (id: number) => {
+    console.log("Dispatching fetchSingleTask");
+    const response = await GetSingleTask(id);
+    console.log("Response: x", response);
+    return response as Task;
+});
+
+const caseCreator = (
+    // Fx should any async thunk with the type of any because they can be very different.
+    fx: AsyncThunk<any, any, {}>,
+    error: string | null,
+    builder: ActionReducerMapBuilder<TaskState>
+) => {
+    builder.addCase(fx.fulfilled, (state: TaskState, action: PayloadAction<Task | Task[]>) => {
+        state.tasks.push(action.payload as Task)
+        state.loading = false;
+    });
+    builder.addCase(fx.pending, (state: TaskState) => {
+        state.loading = true;
+    });
+    builder.addCase(fx.rejected, (state: TaskState) => {
+        state.loading = false;
+        state.error = error;
+    });
+}
 const taskSlice = createSlice({
     name: 'tasks',
     initialState: InitialState,
@@ -52,18 +72,19 @@ const taskSlice = createSlice({
             state.tasks = action.payload;
         }
     },
-    extraReducers: (builder) => { 
-        builder.addCase(fetchTasks.fulfilled, (state, action) => { 
+    extraReducers: (builder) => {
+        builder.addCase(fetchTasks.fulfilled, (state, action) => {
             state.tasks = action.payload;
             state.loading = false;
         });
-        builder.addCase(fetchTasks.pending, (state) => { 
+        builder.addCase(fetchTasks.pending, (state) => {
             state.loading = true;
         });
-        builder.addCase(fetchTasks.rejected, (state) => { 
+        builder.addCase(fetchTasks.rejected, (state) => {
             state.loading = false;
             state.error = 'An error occurred while fetching tasks';
         });
+        caseCreator(fetchSingleTask, 'An error occurred while fetching tasks', builder);
     }
 });
 

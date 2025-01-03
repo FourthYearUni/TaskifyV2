@@ -49,7 +49,7 @@ const AllTasks = () => {
                     </p>
                     <p className="date">Today, {date}</p>
                     {loading == false ? tasks.map(task =>
-                        <a className="task-links" href={`/tasks/${task.id}`}>
+                        <span className="task-links" onClick={() => handleRedirect(`/tasks/${task.id}`)}>
                             <div className="task">
                                 <div className="task-body">
                                     <div className="farleft">
@@ -64,7 +64,7 @@ const AllTasks = () => {
 
                                 </div>
                             </div>
-                        </a>
+                        </span>
                     ) : <span>Loading ...</span>}
                 </div>
 

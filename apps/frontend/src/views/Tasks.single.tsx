@@ -4,24 +4,51 @@
  */
 
 // Core libs
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 
 // Helpers and utilities
-import { RootState } from '../redux/store';
+import { AppDispatch, RootState } from '../redux/store';
+import { fetchSingleTask } from '../redux/slices/task';
 
 // Components and styles
 import Nav from '../components/Nav';
 import '../assets/css/styles.css';
+import { useEffect } from 'react';
 
+const deleteHandler = (id: number) => { 
+
+}
 
 const SingleTask = () => {
     const { id } = useParams<{ id: string }>();
-    const task = useSelector((state: RootState) => state.tasks.tasks.find(task => task.id === Number(id)));
+    const loading = useSelector((state: RootState) => state.tasks.loading);
+    const tasks = useSelector((state: RootState) => state.tasks.tasks);
+    const dispatch = useDispatch<AppDispatch>();
+    
+    useEffect(() => { 
+        console.log("Dispatching fetchSingleTask");
+        dispatch(fetchSingleTask(Number(id)));
+    }, [dispatch, id]);
 
-    if (!task) {
-        return <div>Task not found</div>;
+    if (tasks.length == 0) {
+        return (
+            <div className="body">
+
+                <div className="container">
+                    <Nav />
+                    <div className="container-body">
+
+                        <p className="greeting">
+                            Loading ... &#128204;
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        )
     }
+    const task = tasks[0];
 
     const date = new Date(task.deadline).toLocaleDateString('en-US',
         { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -33,7 +60,7 @@ const SingleTask = () => {
                 <div className="container-body">
 
                     <p className="greeting">
-                        {task.title} &#128204;
+                        {loading == true? 'Loading ...' : task.title} &#128204;
                     </p>
                     <p className="date">Due, {date}</p>
                     <a className="task-links" href="/tasks/{{$task->id}}">
@@ -46,8 +73,6 @@ const SingleTask = () => {
                                 </div>
                                 <div className="action">
                                     <form method="post" action="/tasks/delete/{id}">
-                                        @csrf
-                                        @method('delete')
                                         <button type="submit" className="btn-delete"> Delete</button>
                                     </form>
 
