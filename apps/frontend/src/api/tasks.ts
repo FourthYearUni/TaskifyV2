@@ -20,8 +20,7 @@ const CreateTask = async (data: unknown) => {
     const url = `${env.API_URL}/tasks/create`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'POST', data, authKey);
-    console.log("Response: ====", response);
-    return response.data;
+    return response;
 }
 
 const UpdateTask = async (id: number, data: unknown) => {

@@ -50,7 +50,6 @@ class TasksController extends Controller
 
     public function store(Request $req): JsonResponse
     {
-        
         $task = new Task;
         $task_assoc = new tasks_user_assoc;
         $req->deadline = date('Y-m-d H:i:s', strtotime($req->date));

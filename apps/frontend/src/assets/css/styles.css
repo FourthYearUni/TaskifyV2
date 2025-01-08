@@ -184,7 +184,7 @@ li {
     background-color: lightcoral;
     color: white;
     border-color: lightcoral;
-    max-width: 6em;
+    max-width: 7em;
     max-height: 3em;
 }
 .pagination{
@@ -205,4 +205,11 @@ li {
     color: red;
     font-family: Figtree, system-ui;
 
+}
+.errors {
+    display: flex;
+    flex-direction: row;
+    color: red;
+    font-family: Figtree, system-ui;
+    flex-wrap: wrap;
 }

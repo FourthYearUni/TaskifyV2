@@ -10,7 +10,7 @@ const Nav = () => {
     </div>
 
     <div className="nav-footer">
-        <p>Built in Huddersfield by <a href="https://github.com/avici1">@avici1</a></p>
+        <p>Built in Huddersfield by <a href="https://github.com/0verwtch">@avici1</a></p>
     </div>
 </nav>
 )

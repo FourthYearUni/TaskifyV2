@@ -5,39 +5,35 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
 import { CreateTask, GetSingleTask } from '../../api/tasks';
-import { Task } from '../../redux/slices/task';
+import { RootState } from '../../redux/store';
+import { fetchSingleTask } from '../../redux/slices/task';
 
 const AddTask = () => {
-    const [formData, setFormData] = useState({});
-    const [task, setTask] = useState<Task>({
-        id: 0,
-        user_id: 0,
-        title: '',
-        description: '',
-        priority: 1,
-        project: 1,
-        deadline: new Date(),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-    });
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>();
 
-    useEffect(() => { 
-        GetSingleTask(Number(id)).then((response) => { 
+    const { id } = useParams<{ id: string }>();
+    const [formData, setFormData] = useState({});
+    const task = useSelector((state: RootState) => state.tasks.tasks[0]);
+    
+    
+    useEffect(() => {
+        GetSingleTask(Number(id)).then((response) => {
             console.log("Response: ", response);
-            setTask(response.data);
-        }).catch((error) => { 
+            dispatch(fetchSingleTask(Number(id)) as any);
+            console.log("Task: ", task);
+        }).catch((error) => {
             console.log("Error: ", error);
         });
-    }, [id]);
-    
+    }, []);
+
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
             ...formData,
@@ -63,6 +59,7 @@ const AddTask = () => {
         });
 
     }
+    console.log("Task: ", task);
     if (!task) {
         return (
             <div className="body">
@@ -89,29 +86,29 @@ const AddTask = () => {
 
                     <p className="title">Task edit</p>
                     <label htmlFor="title">Title</label>
-                    <input type="text" name="title" id="title" value={task.title} onChange={(e) => handleOnChange(e)} />
+                    <input type="text" name="title" id="title" placeholder={task.title} onChange={(e) => handleOnChange(e)} />
 
                     <label htmlFor="description">Description</label>
-                    <textarea name="description" id="description" value={task.description} onChange={(e) => handleOnChange(e)}></textarea>
+                    <textarea name="description" id="description" placeholder={task.description} onChange={(e) => handleOnChange(e)}></textarea>
 
                     <label htmlFor="priority">Priority</label>
-                    <select name="priority" id="priority" value={task.priority} onChange={(e) => handleOnChange(e)}>
+                    <select name="priority" id="priority" defaultValue={task.priority} onChange={(e) => handleOnChange(e)}>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
                         <option value={3}>High</option>
                         <option value={4}>Urgent</option>
                     </select>
                     <label htmlFor="project">Project</label>
-                    <select itemType="number" name="project" value={task.project} id="priority" onChange={(e) => handleOnChange(e)}>
+                    <select itemType="number" name="project" defaultValue={task.project} id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
                         <option value={3}>High</option>
                         <option value={4}>Urgent</option>
                     </select>
                     <label htmlFor="deadline">Deadline </label>
-                    <input type="datetime-local" name="deadline" value={task.deadline.toISOString().slice(0, 16)} onChange={(e) => handleOnChange(e)} />
+                    <input type="datetime-local" name="deadline" placeholder={new Date(task.deadline).toLocaleDateString()} onChange={(e) => handleOnChange(e)} />
 
-                    <button type="submit" className='btn-submit' onClick={(e) => handleSubmit(e)}>Create a task</button>
+                    <button type="submit" className='btn-submit' onClick={(e) => handleSubmit(e)}>Update a task</button>
 
                 </div>
             </div>

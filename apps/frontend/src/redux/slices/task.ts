@@ -57,9 +57,13 @@ const caseCreator = (
     // Fx should any async thunk with the type of any because they can be very different.
     fx: AsyncThunk<any, any, {}>,
     error: string | null,
-    builder: ActionReducerMapBuilder<TaskState>
+    builder: ActionReducerMapBuilder<TaskState>,
+    invalidate: boolean = false
 ) => {
     builder.addCase(fx.fulfilled, (state: TaskState, action: PayloadAction<Task | Task[]>) => {
+        if (invalidate) { 
+            state.tasks = [];
+        }
         state.tasks.push(action.payload as Task)
         state.loading = false;
     });
@@ -92,7 +96,7 @@ const taskSlice = createSlice({
             state.loading = false;
             state.error = 'An error occurred while fetching tasks';
         });
-        caseCreator(fetchSingleTask, 'An error occurred while fetching tasks', builder);
+        caseCreator(fetchSingleTask, 'An error occurred while fetching tasks', builder, true);
         caseCreator(deleteTask, 'An error occurred while deleting task', builder);
     }
 });
