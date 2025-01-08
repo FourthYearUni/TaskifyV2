@@ -3,36 +3,29 @@
  * @description: This file contains the view for the Create Tasks page
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
 
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
-import { CreateTask, GetSingleTask } from '../../api/tasks';
-import { RootState } from '../../redux/store';
-import { fetchSingleTask } from '../../redux/slices/task';
+import { UpdateTask } from '../../api/tasks';
 
-const AddTask = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+interface Errors {
+    title?: string;
+    description?: string;
+    priority?: string;
+    project?: string;
+    deadline?: string;
+    user_id?: string;
+}
 
-    const { id } = useParams<{ id: string }>();
+const UpdateTaskView = () => {
     const [formData, setFormData] = useState({});
-    const task = useSelector((state: RootState) => state.tasks.tasks[0]);
-    
-    
-    useEffect(() => {
-        GetSingleTask(Number(id)).then((response) => {
-            console.log("Response: ", response);
-            dispatch(fetchSingleTask(Number(id)) as any);
-            console.log("Task: ", task);
-        }).catch((error) => {
-            console.log("Error: ", error);
-        });
-    }, []);
+    const [errors, setErrors] = useState<Errors>({});
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
@@ -40,80 +33,86 @@ const AddTask = () => {
             [e.target.name]: e.target.value
         })
     }
+
     const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        console.log("Event fired")
-        CreateTask(formData).then((response) => {
-            console.log(response);
+        UpdateTask(Number(id), formData).then((response) => {
+            console.log("Response: zzzz ", response);
             // TODO: Handle the response with a toast or alert
             if (response.status === 200) {
-                alert('Task created successfully');
+                alert('Task updated successfully');
                 navigate('/');
             } else {
-                alert('An error occurred while creating the task');
+                console.log("Setting errors: ", response.errors);
+                setErrors(response.errors);
             }
         }).catch((error) => {
             console.log("Error: ", error);
             console.log("FormData: ", formData);
-            alert('An error occurred while creating the task');
         });
-
-    }
-    console.log("Task: ", task);
-    if (!task) {
-        return (
-            <div className="body">
-
-                <div className="container">
-                    <Nav />
-                    <div className="container-body">
-
-                        <p className="greeting">
-                            Loading ... &#128204;
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        )
     }
 
+    console.log("Errors: ", errors);
     return (
         <div className="container">
             < Nav />
             <div className="container-main">
                 <div className='form'>
 
-                    <p className="title">Task edit</p>
+                    <p className="title">Task update</p>
+
+                    {/* Title */}
                     <label htmlFor="title">Title</label>
-                    <input type="text" name="title" id="title" placeholder={task.title} onChange={(e) => handleOnChange(e)} />
+                    <input type="text" name="title" id="title" onChange={(e) => handleOnChange(e)} />
+                    {errors && errors.title && <p className='error-box'>{errors.title}</p>}
 
+                    {/* Description */}
                     <label htmlFor="description">Description</label>
-                    <textarea name="description" id="description" placeholder={task.description} onChange={(e) => handleOnChange(e)}></textarea>
+                    <textarea name="description" id="description" onChange={(e) => handleOnChange(e)}></textarea>
+                    {errors && errors.description && <p className='error-box'>{errors.description}</p>}
 
+                    {/* Priority */}
                     <label htmlFor="priority">Priority</label>
-                    <select name="priority" id="priority" defaultValue={task.priority} onChange={(e) => handleOnChange(e)}>
+                    <select name="priority" id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
                         <option value={3}>High</option>
                         <option value={4}>Urgent</option>
                     </select>
+                    {errors && errors.priority && <p className='error-box'>{errors.priority}</p>}
+
+                    {/* user */}
+                    <label htmlFor="priority">User</label>
+                    <select name="user_id" id="priority" onChange={(e) => handleOnChange(e)}>
+                        <option value={1}>Low</option>
+                        <option value={2}>Medium</option>
+                        <option value={3}>High</option>
+                        <option value={4}>Urgent</option>
+                    </select>
+                    {errors && errors.user_id && <p className='error-box'>{errors.user_id}</p>}
+
+                    {/* Project */}
                     <label htmlFor="project">Project</label>
-                    <select itemType="number" name="project" defaultValue={task.project} id="priority" onChange={(e) => handleOnChange(e)}>
+                    <select itemType="number" name="project" id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
                         <option value={3}>High</option>
                         <option value={4}>Urgent</option>
                     </select>
+                    {errors && errors.project && <p className='error-box'>{errors.project}</p>}
+
+                    {/* Deadline */}
                     <label htmlFor="deadline">Deadline </label>
-                    <input type="datetime-local" name="deadline" placeholder={new Date(task.deadline).toLocaleDateString()} onChange={(e) => handleOnChange(e)} />
+                    <input type="datetime-local" name="deadline" onChange={(e) => handleOnChange(e)} />
+                    {errors && errors.deadline && <p className='error-box'>{errors.deadline}</p>}
 
                     <button type="submit" className='btn-submit' onClick={(e) => handleSubmit(e)}>Update a task</button>
 
                 </div>
+
             </div>
         </div>
     )
 }
 
-export default AddTask;
+export default UpdateTaskView;

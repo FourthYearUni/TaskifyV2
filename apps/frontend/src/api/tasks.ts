@@ -26,8 +26,9 @@ const CreateTask = async (data: unknown) => {
 const UpdateTask = async (id: number, data: unknown) => {
     const url = `${env.API_URL}/tasks/update/${id}`;
     const authKey = env.API_KEY || '';
-    const response = await fetcher(url, 'PUT', data, authKey);
-    return response.data;
+    const response = await fetcher(url, 'PATCH', data, authKey);
+    console.log("Response: zzzz", response);
+    return response;
 }
 
 const SearchTasks = async (data: string) => { 

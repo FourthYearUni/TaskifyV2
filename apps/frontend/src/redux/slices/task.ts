@@ -26,6 +26,7 @@ interface TaskState {
     tasks: Task[];
     loading: boolean;
     error: string | null;
+    
 };
 
 const InitialState: TaskState = {

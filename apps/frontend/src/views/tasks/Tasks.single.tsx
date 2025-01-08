@@ -54,6 +54,24 @@ const SingleTask = () => {
             </div>
         )
     }
+
+    if (tasks[0] == null) {
+        return (
+            <div className="body">
+
+                <div className="container">
+                    <Nav />
+                    <div className="container-body">
+
+                        <p className="greeting">
+                            Task not found &#128204;
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
     const task = tasks[0];
 
     const date = new Date(task.deadline).toLocaleDateString('en-US',

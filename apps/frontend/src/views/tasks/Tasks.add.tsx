@@ -3,7 +3,7 @@
  * @description: This file contains the view for the Create Tasks page
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import '../../assets/css/styles.css';
