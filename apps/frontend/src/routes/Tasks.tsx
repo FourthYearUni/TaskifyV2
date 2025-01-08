@@ -1,11 +1,15 @@
 import { Routes, Route } from 'react-router';
-import TaskView from '../views/Tasks.all';
-import SingleTaskView from '../views/Tasks.single';
+import TaskView from '../views/tasks/Tasks.all';
+import SingleTaskView from '../views/tasks/Tasks.single';
+import AddTask from '../views/tasks/Tasks.add';
+import EditTask from '../views/tasks/Tasks.edit';
 
-const TaskRouter = () =>  (
+const TaskRouter = () => (
     <Routes >
-        <Route path='/tasks' element={<TaskView />} />
+        <Route path='/' element={<TaskView />} />
         <Route path='/tasks/:id' element={<SingleTaskView />} />
+        <Route path='/tasks/create' element={<AddTask />} />
+        <Route path='/tasks/edit/:id' element={<EditTask />} />
     </Routes>
 )
 

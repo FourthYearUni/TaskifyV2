@@ -5,7 +5,7 @@ const Nav = () => {
     </div>
 
     <div className="nav-body">
-        <a href="/tasks"> <span className="chevron"> {'>'} </span> All tasks</a>
+        <a href="/"> <span className="chevron"> {'>'} </span> All tasks</a>
         <a href="/tasks/create"><span className="chevron"> + </span> Add tasks</a>
     </div>
 

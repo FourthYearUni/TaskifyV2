@@ -9,13 +9,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 // Helpers and utilities
-import { RootState, AppDispatch } from '../redux/store';
-import { fetchTasks,  } from '../redux/slices/task';
+import { RootState, AppDispatch } from '../../redux/store';
+import { fetchTasks, } from '../../redux/slices/task';
 
 
 // Components and styles
-import Nav from '../components/Nav';
-import '../assets/css/styles.css';
+import Nav from '../../components/Nav';
+import '../../assets/css/styles.css';
 
 
 const AllTasks = () => {
@@ -30,7 +30,7 @@ const AllTasks = () => {
         dispatch(fetchTasks());
     }, [dispatch]);
 
-    const handleRedirect = (route: string) => { 
+    const handleRedirect = (route: string) => {
         navigate(route);
     };
 
@@ -49,12 +49,12 @@ const AllTasks = () => {
                     </p>
                     <p className="date">Today, {date}</p>
                     {loading == false ? tasks.map(task =>
-                        <span className="task-links" onClick={() => handleRedirect(`/tasks/${task.id}`)}>
+                        <span key={task.id} className="task-links" onClick={() => handleRedirect(`/tasks/${task.id}`)}>
                             <div className="task">
                                 <div className="task-body">
                                     <div className="farleft">
                                         <p>{task.title}</p>
-                                        <p>{task.description.slice(0, 10)}...</p>
+                                        <p>{task.description ? task.description.slice(0, 10) : ''}...</p>
 
                                     </div>
                                     <div className="farright">

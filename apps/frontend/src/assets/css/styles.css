@@ -132,22 +132,32 @@ li {
     /*margin-left: 20%;*/
     position: sticky;
     top: 0;
+    height: 10vh;
+    display: flex;
+    max-width: 40vw;
+    max-height: 10vh;
 }
 .search input {
-    padding: 1%;
+    /* padding: 1%; */
     width: 60%;
-    border-radius: 10px;
-    border-color: white;
+    /* border-radius: 10px; */
+    border-color: #EBEFF5;
+    border-radius: 0.7em;
+    max-height: 3em;
+    padding-left: 0.5em;
 }
 .search input:active {
     border-color: lightcoral;
 }
 .search button {
-    padding: 1%;
-    border-radius: 10px;
+    /* padding: 1%; */
+    border-radius: 0.3em;
     border-color: lightcoral;
     background-color: lightcoral;
     color: white;
+    margin-left: 1em;
+    max-width: 7em;
+    max-height: 3em;
 }
 
 .nav-footer {
@@ -168,12 +178,14 @@ li {
 
 .btn-delete{
     margin-right: 30%;
-    padding: 25%;
+    /* padding: 25%; */
     border-radius: 10%;
     /*width: 90%;*/
     background-color: lightcoral;
     color: white;
     border-color: lightcoral;
+    max-width: 6em;
+    max-height: 3em;
 }
 .pagination{
     font-family: Figtree, system-ui;

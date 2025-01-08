@@ -17,7 +17,7 @@ class TasksController extends Controller
         'title' => 'required|string|max:100',
         'description' => 'required|string|max:255',
         'priority' => 'required|integer|min:1|max:5',
-        'deadline' => 'required|date|after_or_equal:today',
+        'deadline' => 'required|string',
         'user_id' => 'required|integer',
         'project_id' => 'nullable|integer'
     ];
@@ -25,7 +25,7 @@ class TasksController extends Controller
         'title' => 'nullable|string|max:100',
         'description' => 'nullable|string|max:255',
         'priority' => 'nullable|integer|min:1|max:5',
-        'deadline' => 'nullable|date|date_format:Y-m-d H:i:s |after_or_equal:today',
+        'deadline' => 'nullable|string',
         'complete' => 'nullable|boolean',
         'project_id' => 'nullable|integer'
     ];
@@ -50,8 +50,10 @@ class TasksController extends Controller
 
     public function store(Request $req): JsonResponse
     {
+        
         $task = new Task;
         $task_assoc = new tasks_user_assoc;
+        $req->deadline = date('Y-m-d H:i:s', strtotime($req->date));
         $validateRequest = $req->validate($this->rules);
 
         $task->title = $validateRequest['title'];
@@ -65,7 +67,6 @@ class TasksController extends Controller
         $task_assoc->task_id = $task->id;
         $task_assoc->user_id = $validateRequest['user_id'];
         $task_assoc->save();
-
         return response()->json(['data' => $task, 'status' => 201], 201);
     }
 

@@ -16,14 +16,15 @@ const DeleteTask = async (id: number) => {
     return response.data;
 }
 
-const CreateTask = async (data: any) => { 
+const CreateTask = async (data: unknown) => { 
     const url = `${env.API_URL}/tasks/create`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'POST', data, authKey);
+    console.log("Response: ====", response);
     return response.data;
 }
 
-const UpdateTask = async (id: number, data: any) => {
+const UpdateTask = async (id: number, data: unknown) => {
     const url = `${env.API_URL}/tasks/update/${id}`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'PUT', data, authKey);

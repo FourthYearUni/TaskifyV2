@@ -7,8 +7,8 @@ use App\Http\Controllers\UserController;
 
 // Protected actions
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/tasks', [Task::class, 'get_all'])->name('showAllTasks');
     Route::post('/tasks/create', [Task::class, 'store']);
+    Route::get('/tasks', [Task::class, 'get_all'])->name('showAllTasks');
 
     Route::get('/tasks/{id}', [Task::class, 'get'])->name('showTasks');
     Route::patch('/tasks/update/{id}', [Task::class, 'update']);

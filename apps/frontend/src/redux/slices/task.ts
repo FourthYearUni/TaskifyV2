@@ -7,7 +7,7 @@
 import { ActionReducerMapBuilder, AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Helpers and utilities
-import { GetAllTasks, GetSingleTask } from '../../api/tasks';
+import { GetAllTasks, GetSingleTask, DeleteTask } from '../../api/tasks';
 
 // Interfaces
 export interface Task {
@@ -17,6 +17,7 @@ export interface Task {
     priority: number;
     deadline: Date;
     user_id: number;
+    project: number;
     created_at: string;
     updated_at: string;
 };
@@ -33,7 +34,7 @@ const InitialState: TaskState = {
     error: null
 };
 
-// Async thunks
+// Async thunks for handling async operations to the api.
 export const fetchTasks = createAsyncThunk<Task[]>('tasks/fetchTasks', async () => {
     const response = await GetAllTasks();
     return response as Task[];
@@ -46,6 +47,12 @@ export const fetchSingleTask = createAsyncThunk<Task, number>('tasks/fetchSingle
     return response as Task;
 });
 
+export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id: number) => { 
+    const response = await DeleteTask(id);
+    return response;
+});
+
+// Helper function for creating cases for the async thunks.
 const caseCreator = (
     // Fx should any async thunk with the type of any because they can be very different.
     fx: AsyncThunk<any, any, {}>,
@@ -64,6 +71,7 @@ const caseCreator = (
         state.error = error;
     });
 }
+
 const taskSlice = createSlice({
     name: 'tasks',
     initialState: InitialState,
@@ -85,6 +93,7 @@ const taskSlice = createSlice({
             state.error = 'An error occurred while fetching tasks';
         });
         caseCreator(fetchSingleTask, 'An error occurred while fetching tasks', builder);
+        caseCreator(deleteTask, 'An error occurred while deleting task', builder);
     }
 });
 
