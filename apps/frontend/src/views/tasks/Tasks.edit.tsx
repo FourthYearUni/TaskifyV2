@@ -41,7 +41,7 @@ const UpdateTaskView = () => {
             // TODO: Handle the response with a toast or alert
             if (response.status === 200) {
                 alert('Task updated successfully');
-                navigate('/');
+                navigate(`/tasks/${id}`);
             } else {
                 console.log("Setting errors: ", response.errors);
                 setErrors(response.errors);
