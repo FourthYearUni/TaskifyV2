@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Models\Task;
-use App\Models\tasks_user_assoc;
-use Illuminate\View\View;
+
 
 class TasksController extends Controller
 {
@@ -41,7 +39,7 @@ class TasksController extends Controller
 
     public function get_all(): JsonResponse
     {
-        $tasks = DB::table('tasks')->orderBy('priority')->orderBy('deadline')->paginate(5);
+        $tasks = DB::table('tasks')->orderBy('priority')->orderBy('deadline');
         if (!$tasks) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
@@ -51,7 +49,6 @@ class TasksController extends Controller
     public function store(Request $req): JsonResponse
     {
         $task = new Task;
-        $task_assoc = new tasks_user_assoc;
         $req->deadline = date('Y-m-d H:i:s', strtotime($req->date));
         $validateRequest = $req->validate($this->rules);
 
@@ -63,9 +60,6 @@ class TasksController extends Controller
         $task->complete = false;
         $task->save();
 
-        $task_assoc->task_id = $task->id;
-        $task_assoc->user_id = $validateRequest['user_id'];
-        $task_assoc->save();
         return response()->json(['data' => $task, 'status' => 201], 201);
     }
 

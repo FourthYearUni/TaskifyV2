@@ -4,25 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         //
-        Schema::create('tasks_user_assocs', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('task_id');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->unsignedBigInteger('assigned_to');
             $table
-                ->foreign('user_id')
+                ->foreign('assigned_to')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');
-            $table
-                ->foreign('task_id')
-                ->references('id')
-                ->on('tasks')
                 ->onDelete('cascade');
         });
     }
@@ -33,6 +28,10 @@ return new class extends Migration {
     public function down(): void
     {
         //
-        Schema::dropIfExists('tasks_user_assoc');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropForeign('tasks_assigned_to_foreign');
+            $table->dropColumn('assigned_to');
+
+        });
     }
 };
