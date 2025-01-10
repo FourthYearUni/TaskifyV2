@@ -19,7 +19,7 @@ a {
     width: 100vw;
 }
 
-.task {
+.item {
     border-radius: 10px;
     display: flex;
     flex-direction: row;
@@ -43,7 +43,7 @@ li {
     background-color: bisque;
 }
 
-.task-body {
+.item-body {
     display: flex;
     flex-direction: "row";
     margin-left: 2em;
@@ -53,7 +53,7 @@ li {
 
 }
 
-.task-header {
+.item-header {
     display: flex;
     align-items: center;
 }
@@ -78,6 +78,17 @@ li {
     justify-content: flex-end;
     margin-right: 2em;
 
+}
+.bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1em;
+    font-family: Figtree, system-ui;
+}
+
+.bottom p {
+    color: grey;
 }
 .farright p {
     background-color: #ebeff5;
@@ -123,6 +134,7 @@ li {
     margin-left: 10%;
     display: flex;
     flex-direction: column;
+    margin-top: 1.3em;
 }
 .nav-body a {
     color: #18181b;
@@ -165,12 +177,12 @@ li {
     margin-top: 40%;
     color: grey;
 }
-.task-links {
+.item-links {
     color: black;
 }
 .action {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-bottom: 1em;
     width: 90%;
     height: 30%;
@@ -180,12 +192,15 @@ li {
     margin-right: 30%;
     /* padding: 25%; */
     border-radius: 10%;
-    /*width: 90%;*/
+    width: 10%;
+    height: 100%;
     background-color: lightcoral;
+    cursor: hand;
     color: white;
     border-color: lightcoral;
-    max-width: 7em;
-    max-height: 3em;
+    max-width: 14em;
+    max-height: 20vh;
+    margin-bottom: 2em;
 }
 .pagination{
     font-family: Figtree, system-ui;
@@ -212,4 +227,19 @@ li {
     color: red;
     font-family: Figtree, system-ui;
     flex-wrap: wrap;
+}
+
+i {
+    color: lightcoral;
+    font-size: 0.9em;
+}
+
+.nav-body a {
+    font-weight: 390;
+    font-size: 1.2em;
+}
+
+.fa-trash-alt {
+    color: whitesmoke;
+    font-size: 1.5em;
 }

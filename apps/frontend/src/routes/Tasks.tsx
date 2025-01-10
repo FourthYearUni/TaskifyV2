@@ -1,3 +1,7 @@
+/**
+ * @author @0verwtch
+ * @description This file contains the routes for the task views.
+ */
 import { Routes, Route } from 'react-router';
 import TaskView from '../views/tasks/Tasks.all';
 import SingleTaskView from '../views/tasks/Tasks.single';
