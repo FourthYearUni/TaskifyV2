@@ -1,6 +1,6 @@
 /**
  * @author: @0verwtch
- * @description: This file contains the view for the Single Task page.
+ * @description: This file contains the view for the Single Project page.
  */
 
 // Core libs
@@ -10,7 +10,7 @@ import { MouseEvent as ReactMouseEvent } from 'react';
 
 // Helpers and utilities
 import { AppDispatch, RootState } from '../../redux/store';
-import { fetchSingleTask, deleteTask } from '../../redux/slices/task';
+import { fetchSingleProject, deleteProject } from '../../redux/slices/project';
 
 // Components and styles
 import Nav from '../../components/Nav';
@@ -19,25 +19,29 @@ import { useEffect } from 'react';
 
 
 
-const SingleTask = () => {
+const SingleProject = () => {
     const { id } = useParams<{ id: string }>();
-    const loading = useSelector((state: RootState) => state.tasks.loading);
-    const tasks = useSelector((state: RootState) => state.tasks.tasks);
+    const loading = useSelector((state: RootState) => state.projects.loading);
+    const projects = useSelector((state: RootState) => state.projects.projects);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("Dispatching fetchSingleTask");
-        dispatch(fetchSingleTask(Number(id)));
+        console.log("Dispatching fetchSingleProject");
+        dispatch(fetchSingleProject(Number(id)));
     }, [dispatch, id]);
 
     const deleteHandler = (e: ReactMouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
-        console.log("Deleting task with id: ", id);
-        dispatch(deleteTask(id));
-        navigate('/');
+        console.log("Deleting project with id: ", id);
+        // dispatch(deleteProject(id)).then(() => {
+        //     // window.location.href = '/projects';
+        //     navigate('/projects');
+        //  });
+        dispatch(deleteProject(id));
+        navigate('/projects');
     }
-    if (tasks.length == 0) {
+    if (projects.length == 0) {
         return (
             <div className="body">
 
@@ -55,7 +59,7 @@ const SingleTask = () => {
         )
     }
 
-    if (tasks[0] == null) {
+    if (projects[0] == null) {
         return (
             <div className="body">
 
@@ -64,7 +68,7 @@ const SingleTask = () => {
                     <div className="container-body">
 
                         <p className="greeting">
-                            Task not found &#128204;
+                            Project not found &#128204;
                         </p>
                     </div>
 
@@ -72,9 +76,9 @@ const SingleTask = () => {
             </div>
         )
     }
-    const task = tasks[0];
+    const project = projects[0];
 
-    const date = new Date(task.deadline).toLocaleDateString('en-US',
+    const date = new Date(project.deadline).toLocaleDateString('en-US',
         { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     return (
         <div className="body">
@@ -84,23 +88,27 @@ const SingleTask = () => {
                 <div className="container-body">
 
                     <p className="greeting">
-                        {loading == true ? 'Loading ...' : task.title} &#128204;
+                        {loading == true ? 'Loading ...' : project.name} &#128204;
                     </p>
                     <p className="date">Due, {date}</p>
-                    <a className="item-links" href="/tasks/{{$task->id}}">
+                    <a className="item-links" href="/projects/single/{{$project->id}}">
                         <div className="item">
                             <div className="item-body" style={{ flexDirection: "column" }}>
                                 <h3>Description</h3>
                                 <div className="farleft">
-                                    <p>{task.description}</p>
-
+                                    <p>{project.description}</p>
+                                    <div className="bottom">
+                                        <p>PM: @user_{project.owner}</p>
+                                    </div>
                                 </div>
-                                <div className="action">
-                                    <form>
-                                        <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, task.id)}> <i className='fas fa-trash' style={{color: "white"}} /> Delete</button>
-                                    </form>
 
-                                    <a href={`/tasks/edit/${task.id}`} style={{ marginLeft: "5%" }}>&#128221; Edit</a>
+
+                                <div className="action">
+                                        <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, project.id)}>
+                                            <i className='fas fa-trash fa-trash-alt' /> Delete
+                                        </button>
+
+                                    <a href={`/projects/edit/${project.id}`} >Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -112,4 +120,4 @@ const SingleTask = () => {
     )
 }
 
-export default SingleTask;
+export default SingleProject;

@@ -16,8 +16,8 @@ class TasksController extends Controller
         'description' => 'required|string|max:255',
         'priority' => 'required|integer|min:1|max:5',
         'deadline' => 'required|string',
-        'user_id' => 'required|integer',
-        'project_id' => 'nullable|integer'
+        'project_id' => 'nullable|integer',
+        'assigned_to' => 'required|integer'
     ];
     protected $update_rules = [
         'title' => 'nullable|string|max:100',
@@ -39,7 +39,7 @@ class TasksController extends Controller
 
     public function get_all(): JsonResponse
     {
-        $tasks = DB::table('tasks')->orderBy('priority')->orderBy('deadline');
+        $tasks = DB::table('tasks')->orderBy('priority')->orderBy('deadline')->get();
         if (!$tasks) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
@@ -58,6 +58,8 @@ class TasksController extends Controller
         $task->decayFactor = 1.5;
         $task->deadline = $validateRequest['deadline'];
         $task->complete = false;
+        $task->project_id = $validateRequest['project_id'];
+        $task->assigned_to = $validateRequest['assigned_to'];
         $task->save();
 
         return response()->json(['data' => $task, 'status' => 201], 201);

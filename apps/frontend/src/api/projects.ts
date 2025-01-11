@@ -2,48 +2,52 @@ import { fetcher } from "../helpers/fetch";
 import env from "../env";
 
 
-const GetAllTasks = async () => {
-    const url = `${env.API_URL}/tasks`;
+const GetAllProjects = async () => {
+    const url = `${env.API_URL}/projects`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'GET', '', authKey);
     return response.data;
 }
 
-const DeleteTask = async (id: number) => { 
-    const url = `${env.API_URL}/tasks/delete/${id}`;
+const DeleteProject = async (id: number) => {
+    const url = `${env.API_URL}/projects/delete/${id}`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'DELETE', '', authKey);
-    return response.data;
+    console.log("from delete Response: ", response);
+    if (response.status === 200) { 
+        return [];
+    };
 }
 
-const CreateTask = async (data: unknown) => { 
-    const url = `${env.API_URL}/tasks/create`;
+const CreateProject = async (data: unknown) => {
+    const url = `${env.API_URL}/projects/create`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'POST', data, authKey);
     return response;
 }
 
-const UpdateTask = async (id: number, data: unknown) => {
-    const url = `${env.API_URL}/tasks/update/${id}`;
+const UpdateProject = async (id: number, data: unknown) => {
+    const url = `${env.API_URL}/projects/update/${id}`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'PATCH', data, authKey);
-    console.log("Response: zzzz", response);
     return response;
 }
 
-const SearchTasks = async (data: string) => { 
-    const url = `${env.API_URL}/tasks/search`;
+const SearchProjects = async (data: string) => {
+    const url = `${env.API_URL}/projects/search`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'POST', data, authKey);
     return response.data.data;
 }
 
-const GetSingleTask = async (id: number) => { 
-    const url = `${env.API_URL}/tasks/${id}`;
+const GetSingleProject = async (id: number) => {
+    const url = `${env.API_URL}/projects/single/${id}`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'GET', '', authKey);
     console.log("Response: ", response);
     return response.data;
 }
 
-export { GetAllTasks, DeleteTask, CreateTask, UpdateTask, SearchTasks, GetSingleTask };
+
+
+export { GetAllProjects, DeleteProject, CreateProject, UpdateProject, SearchProjects, GetSingleProject };
