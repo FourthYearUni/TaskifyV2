@@ -6,7 +6,6 @@ const GetAllProjects = async () => {
     const url = `${env.API_URL}/projects`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'GET', '', authKey);
-    console.log("data===", response.data);
     return response.data;
 }
 
@@ -14,7 +13,10 @@ const DeleteProject = async (id: number) => {
     const url = `${env.API_URL}/projects/delete/${id}`;
     const authKey = env.API_KEY || '';
     const response = await fetcher(url, 'DELETE', '', authKey);
-    return response.data;
+    console.log("from delete Response: ", response);
+    if (response.status === 200) { 
+        return [];
+    };
 }
 
 const CreateProject = async (data: unknown) => {

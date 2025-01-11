@@ -237,6 +237,7 @@ i {
 .nav-body a {
     font-weight: 390;
     font-size: 1.2em;
+    cursor: pointer;
 }
 
 .fa-trash-alt {

@@ -87,9 +87,9 @@ const SingleTask = () => {
                         {loading == true ? 'Loading ...' : task.title} &#128204;
                     </p>
                     <p className="date">Due, {date}</p>
-                    <a className="task-links" href="/tasks/{{$task->id}}">
-                        <div className="task">
-                            <div className="task-body" style={{ flexDirection: "column" }}>
+                    <a className="item-links" href="/tasks/{{$task->id}}">
+                        <div className="item">
+                            <div className="item-body" style={{ flexDirection: "column" }}>
                                 <h3>Description</h3>
                                 <div className="farleft">
                                     <p>{task.description}</p>
@@ -97,7 +97,7 @@ const SingleTask = () => {
                                 </div>
                                 <div className="action">
                                     <form>
-                                        <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, task.id)}> Delete</button>
+                                        <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, task.id)}> <i className='fas fa-trash' style={{color: "white"}} /> Delete</button>
                                     </form>
 
                                     <a href={`/tasks/edit/${task.id}`} style={{ marginLeft: "5%" }}>&#128221; Edit</a>

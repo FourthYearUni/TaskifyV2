@@ -42,8 +42,8 @@ const caseCreator = (
             state.projects = [];
         }
         if (Array.isArray(action.payload)) {
-            state.projects.push(...action.payload);
-        } else { 
+            state.projects = action.payload;
+        } else {
             state.projects.push(action.payload);
         }
         state.loading = false;
@@ -59,7 +59,7 @@ const caseCreator = (
 
 export const fetchProjects = createAsyncThunk<Project[]>('projects/fetchProjects', async () => {
     const response = await GetAllProjects();
-    return response;
+    return response as Project[];
 });
 export const fetchSingleProject = createAsyncThunk<Project, number>('projects/fetchSingleProject', async (id: number) => {
     const response = await GetSingleProject(id);
@@ -74,7 +74,7 @@ const projectSlice = createSlice({
     name: 'projects',
     initialState: InitialState,
     reducers: {},
-    extraReducers: (builder: ActionReducerMapBuilder<ProjectState>) => { 
+    extraReducers: (builder: ActionReducerMapBuilder<ProjectState>) => {
         caseCreator(fetchProjects, 'An error occurred while fetching projects', builder);
         caseCreator(fetchSingleProject, 'An error occurred while fetching project', builder, true);
         caseCreator(deleteProject, 'An error occurred while deleting project', builder);

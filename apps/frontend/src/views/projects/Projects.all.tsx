@@ -28,13 +28,31 @@ const AllProjects = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("Dispatching fetchProjects");
         dispatch(fetchProjects());
     }, [dispatch]);
 
     const handleRedirect = (route: string) => {
         navigate(route);
     };
-    console.log(projects);
+
+    if (projects.length == 0) {
+        return (
+            <div className="body">
+
+                <div className="container">
+                    <Nav />
+                    <div className="container-body">
+
+                        <p className="greeting">
+                            Loading ... &#128204;
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="body">
 

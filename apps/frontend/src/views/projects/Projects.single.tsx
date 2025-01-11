@@ -34,6 +34,10 @@ const SingleProject = () => {
     const deleteHandler = (e: ReactMouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
         console.log("Deleting project with id: ", id);
+        // dispatch(deleteProject(id)).then(() => {
+        //     // window.location.href = '/projects';
+        //     navigate('/projects');
+        //  });
         dispatch(deleteProject(id));
         navigate('/projects');
     }
