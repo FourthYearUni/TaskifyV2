@@ -61,4 +61,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'assigned_to');
     }
+
+    public function acls()
+    {
+        return $this
+            ->belongsToMany(
+                acl::class,
+                'acl_user_assocs',
+                'user_id',
+                'acl_id'
+            );
+    }
 }

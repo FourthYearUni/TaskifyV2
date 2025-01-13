@@ -6,6 +6,7 @@ use App\Http\Controllers\TasksController as Task;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectsController as Project;
 
+
 // Protected actions
 Route::middleware('auth:sanctum')->group(function () {
     // Tasks
@@ -24,6 +25,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/projects/single/{id}', [Project::class, 'get_single']);
     Route::patch('/projects/update/{id}', [Project::class, 'update']);
     Route::delete('/projects/delete/{id}', [Project::class, 'delete']);
+
+    // ACLs
+    Route::get('/acl', [ACL::class, 'get_all']);
+    Route::post('/acls/create', [ACL::class, 'create_acl']);
+    Route::patch('/acl/update/{id}', [ACL::class, 'update_acl']);
+    Route::delete('/acl/delete/{id}', [ACL::class, 'delete_acl']);
 });
 // Open actions
 Route::post('/login', [UserController::class, 'login']);
