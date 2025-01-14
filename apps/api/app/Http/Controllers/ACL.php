@@ -1,17 +1,18 @@
-<!--
-@author: @0verwtch
-@desciption: This controller presents methods to handle Access control lists (ACLs). They
-are responsible for handling authorization.  
--->
-
 <?php
+
+namespace App\Http\Controllers;
+
+// @author: @0verwtch
+// @desciption: This controller presents methods to handle Access control lists (ACLs). They
+// are responsible for handling authorization.  
+
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Models\acl;
+use App\Models\acl as ACLModel;
 use App\Models\User;
 
-class AclController extends Controller
+class Acl extends Controller
 {
     protected $creation_validation_rules = [
         'name' => 'required|string|max:100',
@@ -31,21 +32,38 @@ class AclController extends Controller
 
     public function create_acl(Request $req)
     {
-        $acl = new acl;
         $validateRequest = $req->validate($this->creation_validation_rules);
+        $acl = $this->acl_maker($validateRequest);
+        return response()->json(['data' => $acl, 'status' => 201], 201);
+    }
+
+    public function acl_maker($validateRequest): ACLModel
+    {
+        $acl = new ACLModel();
+
+        $duplicate_acl = ACLModel::
+            where('route', $validateRequest['route'])
+            ->where('method', $validateRequest['method'])
+            ->where('action', $validateRequest["action"])->get()->first();
+
+        if ($duplicate_acl) {
+            return $duplicate_acl;
+        }
+
         $acl->name = $validateRequest['name'];
         $acl->description = $validateRequest['description'];
         $acl->route = $validateRequest['route'];
         $acl->method = $validateRequest['method'];
         $acl->action = $validateRequest['action'];
+
         $acl->save();
-        return response()->json(['data' => $acl, 'status' => 201], 201);
+        return $acl;
     }
 
     public function update_acl(Request $req, string $id)
     {
         $id = (int) $id;
-        $acl = acl::where('id', $id)->get()->first();
+        $acl = ACLModel::where('id', $id)->get()->first();
         if (!$acl) {
             return response()->json(['error' => 'ACL not found', 'status' => 404], 404);
         }
@@ -60,7 +78,7 @@ class AclController extends Controller
     public function delete_acl(string $id)
     {
         $id = (int) $id;
-        $acl = acl::where('id', $id)->get()->first();
+        $acl = ACLModel::where('id', $id)->get()->first();
         if (!$acl) {
             return response()->json(['error' => 'ACL not found', 'status' => 404], 404);
         }
@@ -70,14 +88,14 @@ class AclController extends Controller
 
     public function get_all(): JsonResponse
     {
-        $acls = acl::all();
+        $acls = ACLModel::all();
         if (!$acls) {
             return response()->json(['error' => 'No ACLs found', 'status' => 404], 404);
         }
         return response()->json(['data' => $acls, 'status' => 200], 200);
     }
 
-    public function search_by_user(int $user_id): acl | null
+    public function search_by_user(int $user_id): acl|null
     {
         $user = User::find($user_id);
         $acls = $user->acls;
