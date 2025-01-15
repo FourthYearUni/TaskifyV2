@@ -16,17 +16,19 @@ import { store } from './redux/store';
 
 // Components and styles
 
-
 // Routers
 import TaskRouter from './routes/Tasks'
 import ProjectRouter from './routes/Project';
+import AuthRouter from './routes/auth';
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter >
-          <TaskRouter />
-          <ProjectRouter />
+        <ProjectRouter />
+        <TaskRouter />
+        <AuthRouter />
       </BrowserRouter >
     </Provider>
   </StrictMode>,

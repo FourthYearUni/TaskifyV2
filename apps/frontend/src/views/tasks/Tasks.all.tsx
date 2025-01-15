@@ -34,6 +34,24 @@ const AllTasks = () => {
         navigate(route);
     };
 
+    if (!tasks || tasks.length == 0) {
+        return (
+            <div className="body">
+
+                <div className="container">
+                    <Nav />
+                    <div className="container-body">
+
+                        <p className="greeting">
+                            No tasks found &#128204;
+                        </p>
+                        <a href="/tasks/create"><i className="fas fa-plus" /> Add a task</a>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="body">
 

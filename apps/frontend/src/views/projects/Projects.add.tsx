@@ -3,14 +3,14 @@
  * @description: This file contains the view for the Create Tasks page
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
-import { CreateProject } from '../../api/projects';
+import { CreateProject, GetAllProjects } from '../../api/projects';
 
 interface Errors { 
     name?: string;
@@ -48,6 +48,8 @@ const AddProject = () => {
         });
     }
 
+
+
     console.log("Errors: ", errors);
     return (
         <div className="container">
@@ -68,7 +70,7 @@ const AddProject = () => {
                     {errors && errors.description && <p className='error-box'>{errors.description}</p>}
                     
                     {/* user */}
-                    <label htmlFor="priority">Project manager</label>
+                    <label htmlFor="owner">Project manager</label>
                     <select name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
