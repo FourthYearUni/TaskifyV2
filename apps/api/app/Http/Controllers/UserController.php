@@ -16,20 +16,26 @@ class UserController extends Controller
         $user = User::where("email", $request->email)->first();
         if ($user || Hash::check($request->password, $user->password)) {
             $token = $user->createToken('api-token')->plainTextToken;
-            return response()->json(['token' => $token], 200);
+            return response()->json(['token' => $token, 'status' => 200], 200);
         }
-        return response()->json(['error' => 'The provided credentials are incorrect.'], 401);
+        return response()->json(['errors' => 'The provided credentials are incorrect.', 'status' => 401], 401);
     }
     public function register(Request $request)
     {
+        //TODO: Implement a check for duplicates.
         $user = new User();
+        $duplicates = $user::where('email', $request->email)->get();
+        if (count($duplicates)) {
+            return response()->json(['errors' => 'Email not available', 'status' => 400], 400);
+        }
         $user->email = $request->email;
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
         $user->save();
 
+        //TODO: Add error handling for when the signup returns an error.
         $this->assign_role($request->group, $user->getAuthIdentifier());
-        return response()->json(['user' => $user], 200);
+        return response()->json(['user' => $user, 'status' => 200], 200);
     }
 
     public function assign_role(string $role, int $user_id)
@@ -80,7 +86,7 @@ class UserController extends Controller
         // to the association table.
         $allowed_roles = $roles_map[$role]["allowed"];
         $denied_roles = $roles_map[$role]["denied"];
-        
+
         // Loop through each permission in both allowed list and denied list
         // check if the permission exist as an ACL instance if not create one.
 
@@ -117,6 +123,6 @@ class UserController extends Controller
             return response()->json(["error" => "No users were found", "status" => 404], 404);
         }
         return response()->json(["data" => $users, "status" => 200], 200);
-        
+
     }
 }
