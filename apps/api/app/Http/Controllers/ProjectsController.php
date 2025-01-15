@@ -90,7 +90,7 @@ class ProjectsController extends Controller
     public function get_all(): JsonResponse
     {
         $projects = DB::table('projects')->orderBy('deadline')->get();
-        if (!$projects) {
+        if (count($projects) == 0) {
             return response()->json(['error' => 'No projects found', 'status' => 404], 404);
         }
         return response()->json(['data' => $projects, 'status' => 200], 200);

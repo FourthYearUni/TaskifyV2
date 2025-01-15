@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\TasksController as Task;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserController as Users;
 use App\Http\Controllers\ProjectsController as Project;
 use App\Http\Controllers\Acl as ACL;
 
@@ -22,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Projects
     Route::group(['middleware' => 'guard'], function () {
-        Route::post('/projects', [Project::class, 'get_all']);
+        Route::get('/projects', [Project::class, 'get_all']);
         Route::post('/projects/create', [Project::class, 'create']);
         Route::get('/projects/search/{search}', [Project::class, 'search']);
         Route::get('/projects/single/{id}', [Project::class, 'get_single']);
@@ -38,7 +39,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/acl/delete/{id}', [ACL::class, 'delete_acl']);
 
     });
+
+    // Users
+
+    Route::group(['middleware' => 'guard'], function () {
+        Route::get('/users', [Users::class, 'get_users']);
+    });
 });
 // Open actions
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [Users::class, 'login']);
+Route::post('/register', [Users::class, 'register']);

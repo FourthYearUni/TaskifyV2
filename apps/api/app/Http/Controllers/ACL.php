@@ -91,7 +91,7 @@ class Acl extends Controller
     public function get_all(): JsonResponse
     {
         $acls = ACLModel::all();
-        if (!$acls) {
+        if (count($acls) == 0) {
             return response()->json(['error' => 'No ACLs found', 'status' => 404], 404);
         }
         return response()->json(['data' => $acls, 'status' => 200], 200);
@@ -102,13 +102,13 @@ class Acl extends Controller
         $user = User::find($user_id);
         $acls = $user->acls;
 
-        dd($acls->count());
         $filtered_acls = $acls->filter(function ($acl) use ($route, $method) {
+            // dd($route, $acl->route);
             $route_status = preg_match("/$acl->route/", $route);
             $method_status = preg_match("/$acl->method/", $method);
             return $route_status and $method_status;
         });
-        dd($filtered_acls->count());
+        // dd($filtered_acls->count());
         if (!$filtered_acls) {
             return null;
         }

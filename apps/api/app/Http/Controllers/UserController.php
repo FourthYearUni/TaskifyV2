@@ -39,10 +39,14 @@ class UserController extends Controller
 
         // Create a map of all basic roles and their permissions.
         $roles_map = [
-            "admin" => ["allowed" => ["*"], "denied" => "N/A"],
+            "admin" => ["allowed" => [".*"], "denied" => "N/A"],
             "user" => [
                 "allowed" => [
                     "GET_:\/api\/.*\/search\/.*",
+                    "GET_:\/api\/tasks",
+                    "GET_:\/api\/projects",
+                    "GET_:\/api\/acls",
+                    "GET_:\/api\/users",
                     "GET_:\/api\/.*\/single\/.*",
                     "PATCH_:\/api\/tasks\/update\/.*"
                 ],
@@ -54,14 +58,15 @@ class UserController extends Controller
             ]
         ];
 
+        //TODO: Add a 2-step verification check before assigning admin rights
         // Assign roles for admin roles.
         if ($role == 'admin') {
             $req = [
                 "action" => "allowed",
-                "method" => "*",
+                "method" => $roles_map['admin']['allowed'][0],
                 "name" => "Allow all",
                 "description" => "Allows full access to all resources",
-                "route" => "*"
+                "route" => ".*"
             ];
             $acl = $acl_controller->acl_maker($req);
 
@@ -103,5 +108,15 @@ class UserController extends Controller
             $acl = $acl_controller->acl_maker($req);
             $acl_assoc->create_assoc($user_id, $acl->id);
         }
+    }
+
+    public function get_users()
+    {
+        $users = User::pluck('name', 'id');
+        if (count($users) == 0) {
+            return response()->json(["error" => "No users were found", "status" => 404], 404);
+        }
+        return response()->json(["data" => $users, "status" => 200], 200);
+        
     }
 }

@@ -40,7 +40,7 @@ class TasksController extends Controller
     public function get_all(): JsonResponse
     {
         $tasks = DB::table('tasks')->orderBy('priority')->orderBy('deadline')->get();
-        if (!$tasks) {
+        if (count($tasks) == 0) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
         return response()->json(['data' => $tasks, 'status' => 200], 200);
