@@ -68,7 +68,7 @@ const AddProject = () => {
                     {errors && errors.description && <p className='error-box'>{errors.description}</p>}
                     
                     {/* user */}
-                    <label htmlFor="priority">Project manager</label>
+                    <label htmlFor="owner">Project manager</label>
                     <select name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
