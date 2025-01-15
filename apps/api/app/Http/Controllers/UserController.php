@@ -42,14 +42,14 @@ class UserController extends Controller
             "admin" => ["allowed" => ["*"], "denied" => "N/A"],
             "user" => [
                 "allowed" => [
-                    "GET_:/api/*/search/*",
-                    "GET_:/api/*/single/*",
-                    "PATCH_:/api/tasks/update/*"
+                    "GET_:\/api\/.*\/search\/.*",
+                    "GET_:\/api\/.*\/single\/.*",
+                    "PATCH_:\/api\/tasks\/update\/.*"
                 ],
                 "denied" => [
-                    "POST_:/api/*/create",
-                    "PATCH_:/api/*/update/*",
-                    "DELETE_:/api/*/delete/*"
+                    "POST_:\/api\/.*\/create",
+                    "PATCH_:\/api\/.*\/update\/.*",
+                    "DELETE_:\/api\/.*\/delete\/.*"
                 ],
             ]
         ];

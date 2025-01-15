@@ -19,12 +19,15 @@ class Watchdog
     public function handle(Request $request, Closure $next): Response
     {
         // Get authenticated user
-        $user = Auth::user();
+        $user_id = Auth::user()->getAuthIdentifier();
         $acl = new ACL();
-        // dd($acl->search_by_user($user->getAuthIdentifier()));
-
-        // dd($request->method, $request->getPathInfo(), $request->bearerToken());
-
-        return $next($request);
+        $perms = $acl
+            ->search_by_user($user_id, $request->getMethod(), $request->getPathInfo())
+            ->first();
+        if($perms->action == "allowed")
+        {
+            return $next($request);
+        }
+        return response()->json(['error' => 'Access to the resource was denined', 'status' => 403], 403);
     }
 }

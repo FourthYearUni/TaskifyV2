@@ -8,6 +8,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Database\Eloquent\Collection;
+
 use App\Http\Controllers\Controller;
 use App\Models\acl as ACLModel;
 use App\Models\User;
@@ -95,14 +97,21 @@ class Acl extends Controller
         return response()->json(['data' => $acls, 'status' => 200], 200);
     }
 
-    public function search_by_user(int $user_id): acl|null
+    public function search_by_user(int $user_id, string $method, string $route): Collection|null
     {
         $user = User::find($user_id);
         $acls = $user->acls;
 
-        if (!$acls) {
+        dd($acls->count());
+        $filtered_acls = $acls->filter(function ($acl) use ($route, $method) {
+            $route_status = preg_match("/$acl->route/", $route);
+            $method_status = preg_match("/$acl->method/", $method);
+            return $route_status and $method_status;
+        });
+        dd($filtered_acls->count());
+        if (!$filtered_acls) {
             return null;
         }
-        return $acls;
+        return $filtered_acls;
     }
 }
