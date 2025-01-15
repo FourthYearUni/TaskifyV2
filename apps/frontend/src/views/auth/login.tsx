@@ -10,7 +10,7 @@ import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
-import { CreateProject } from '../../api/projects';
+import { login, User } from '../../api/users';
 
 interface Errors {
     email?: string;
@@ -31,9 +31,9 @@ const Login = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        CreateProject(formData).then((response) => {
+        login(formData as User).then((response) => {
             // TODO: Handle the response with a toast or alert
-            if (response.status === 201) {
+            if (response.status === 200) {
                 // alert('Project created successfully');
                 navigate('/');
             } else {

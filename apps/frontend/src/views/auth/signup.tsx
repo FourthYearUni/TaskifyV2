@@ -10,13 +10,14 @@ import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
-import { CreateProject } from '../../api/projects';
+import { signup, User } from '../../api/users';
 
 interface Errors {
     name?: string,
     email?: string;
     password?: string;
     group?: string;
+    misc?:string;
 }
 
 const Signup = () => {
@@ -33,13 +34,18 @@ const Signup = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        CreateProject(formData).then((response) => {
+        signup(formData as User).then((response) => {
             // TODO: Handle the response with a toast or alert
-            if (response.status === 201) {
-                // alert('Project created successfully');
+            console.log(response);
+            if (response.status === 200) {
+                alert('Project created successfully');
                 navigate('/');
             } else {
+                alert('Email is already used');
                 console.log("Setting errors: ", response.errors);
+                if (typeof response.errors == 'string') {
+                    setErrors({ misc: response.errors });
+                }
                 setErrors(response.errors);
             }
         }).catch((error) => {
@@ -48,7 +54,6 @@ const Signup = () => {
         });
     }
 
-    console.log("Errors: ", errors);
     return (
         <div className="container">
             < Nav />
@@ -75,13 +80,13 @@ const Signup = () => {
                     {/* Group */}
                     <label htmlFor="group">Group</label>
                     <select name="group" id="group" onChange={(e) => handleOnChange(e)}>
+                        <option value="NaN">Select</option>
                         <option value="user">User</option>
                         <option value="admin">Administrator</option>
                     </select>
                     {errors && errors.group && <p className='error-box'>{errors.group}</p>}
 
                     <button type="submit" className='btn-submit' onClick={(e) => handleSubmit(e)}>Add user</button>
-
                 </div>
 
             </div>
