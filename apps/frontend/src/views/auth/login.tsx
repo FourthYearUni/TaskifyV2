@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Navigate } from 'react-router';
 
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
@@ -20,7 +20,6 @@ interface Errors {
 const Login = () => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState<Errors>({});
-    const navigate = useNavigate();
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
@@ -34,9 +33,13 @@ const Login = () => {
         login(formData as User).then((response) => {
             // TODO: Handle the response with a toast or alert
             if (response.status === 200) {
-                // alert('Project created successfully');
-                navigate('/');
+                localStorage.setItem('taskify-auth-token', response.token);
+                alert('Project created successfully');
+                window.location.href = "/tasks";
+                console.log("Attempted a redirection");
+
             } else {
+                alert('Wrong credentials');
                 console.log("Setting errors: ", response.errors);
                 setErrors(response.errors);
             }
@@ -62,7 +65,7 @@ const Login = () => {
 
                     {/* Password */}
                     <label htmlFor="password">Password</label>
-                    <input name="password" id="description" onChange={(e) => handleOnChange(e)} />
+                    <input name="password" id="passsword" type="password" onChange={(e) => handleOnChange(e)} />
                     {errors && errors.password && <p className='error-box'>{errors.password}</p>}
 
                     <button type="submit" className='btn-submit' onClick={(e) => handleSubmit(e)}>Login here.</button>

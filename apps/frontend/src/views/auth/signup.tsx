@@ -39,7 +39,7 @@ const Signup = () => {
             console.log(response);
             if (response.status === 200) {
                 alert('Project created successfully');
-                navigate('/');
+                window.location.href = "/";
             } else {
                 alert('Email is already used');
                 console.log("Setting errors: ", response.errors);

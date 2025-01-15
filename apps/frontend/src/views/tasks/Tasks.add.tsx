@@ -39,7 +39,7 @@ const AddTask = () => {
             // TODO: Handle the response with a toast or alert
             if (response.status === 201) {
                 alert('Task created successfully');
-                navigate('/');
+                navigate('/tasks');
             } else {
                 console.log("Setting errors: ", response.errors);
                 setErrors(response.errors);

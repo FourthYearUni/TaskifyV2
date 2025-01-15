@@ -10,7 +10,7 @@ import EditTask from '../views/tasks/Tasks.edit';
 
 const TaskRouter = () => (
     <Routes >
-        <Route path='/' element={<TaskView />} />
+        <Route path='/tasks' element={<TaskView />} />
         <Route path='/tasks/:id' element={<SingleTaskView />} />
         <Route path='/tasks/create' element={<AddTask />} />
         <Route path='/tasks/edit/:id' element={<EditTask />} />
