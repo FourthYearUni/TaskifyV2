@@ -4,7 +4,6 @@
  */
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
@@ -23,7 +22,6 @@ interface Errors {
 const Signup = () => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState<Errors>({});
-    const navigate = useNavigate();
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({

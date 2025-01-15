@@ -1,4 +1,4 @@
-export const fetcher = async (url: string, method: string, body: unknown, authKey?: string) => {
+export const fetcher = async (url: string, method: string, body: unknown) => {
     console.log("Fetching: ", localStorage.getItem('taskify-auth-token'));
     const response = await fetch(url, {
         method: method,

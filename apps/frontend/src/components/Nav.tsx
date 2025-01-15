@@ -5,8 +5,11 @@ const Nav = () => {
     const navigate = useNavigate();
     const token = window.localStorage.getItem('taskify-auth-token');
     console.log("Token is below", token);
-    const handleRedirect = (e, route: string) => {
+    const handleRedirect = (e, route: string, exit: boolean = false) => {
         e.preventDefault();
+        if (exit) {
+            localStorage.clear();
+        }
         navigate(route);
     }
     return (
@@ -29,6 +32,8 @@ const Nav = () => {
 
             <div className="nav-footer">
                 <p>Built in Huddersfield by <a href="https://github.com/0verwtch">@0verwtch</a></p>
+                {token != null && (<a style={{ "cursor": "pointer" }} onClick={(e) => handleRedirect(e, '/', true)}> <i className="fas fa-angle-double-left" /> Logout </a>
+                )}
             </div>
         </nav>
     )

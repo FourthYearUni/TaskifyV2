@@ -47,6 +47,7 @@ const AllProjects = () => {
                         <p className="greeting">
                             Loading ... &#128204;
                         </p>
+                        <a href="/projects/create"><i className="fas fa-plus" /> Add project</a>
                     </div>
 
                 </div>

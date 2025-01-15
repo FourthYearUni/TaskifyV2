@@ -45,6 +45,7 @@ const AllTasks = () => {
                         <p className="greeting">
                             No tasks found &#128204;
                         </p>
+                        <a href="/tasks/create"><i className="fas fa-plus" /> Add a task</a>
                     </div>
 
                 </div>

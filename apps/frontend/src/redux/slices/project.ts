@@ -59,7 +59,12 @@ const caseCreator = (
 
 export const fetchProjects = createAsyncThunk<Project[]>('projects/fetchProjects', async () => {
     const response = await GetAllProjects();
-    return response as Project[];
+    console.log("Response obtained is", response)
+    if (response.status == 200) {
+        console.log("Thunk results", response)
+        return response.data as Project[]
+    }
+    return [] as Project[]
 });
 export const fetchSingleProject = createAsyncThunk<Project, number>('projects/fetchSingleProject', async (id: number) => {
     const response = await GetSingleProject(id);

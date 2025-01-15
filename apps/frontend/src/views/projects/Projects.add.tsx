@@ -3,14 +3,14 @@
  * @description: This file contains the view for the Create Tasks page
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
-import { CreateProject } from '../../api/projects';
+import { CreateProject, GetAllProjects } from '../../api/projects';
 
 interface Errors { 
     name?: string;
@@ -47,6 +47,8 @@ const AddProject = () => {
             console.log("FormData: ", formData);
         });
     }
+
+
 
     console.log("Errors: ", errors);
     return (
