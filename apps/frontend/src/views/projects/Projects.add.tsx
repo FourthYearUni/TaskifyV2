@@ -3,14 +3,24 @@
  * @description: This file contains the view for the Create Tasks page
  */
 
+// Core libs
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
 
+// Styles
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
+// Utilities and components
 import Nav from '../../components/Nav';
-import { CreateProject, GetAllProjects } from '../../api/projects';
+import { CreateProject } from '../../api/projects';
+
+
+// redux
+import { RootState, AppDispatch } from '../../redux/store';
+import { useSelector } from 'react-redux';
+import { fetchUsers } from '../../redux/slices/user';
 
 interface Errors { 
     name?: string;
@@ -22,7 +32,11 @@ interface Errors {
 const AddProject = () => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState<Errors>({});
+    
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+
+    const users = useSelector((state: RootState) => state.users.users);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
@@ -48,8 +62,9 @@ const AddProject = () => {
         });
     }
 
-
-
+    useEffect(() => {
+        dispatch(fetchUsers());
+    },[dispatch]);
     console.log("Errors: ", errors);
     return (
         <div className="container">
@@ -71,11 +86,12 @@ const AddProject = () => {
                     
                     {/* user */}
                     <label htmlFor="owner">Project manager</label>
-                    <select name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
-                        <option value={1}>Low</option>
-                        <option value={2}>Medium</option>
-                        <option value={3}>High</option>
-                        <option value={4}>Urgent</option>
+                    <select itemType="number" name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
+                        <option value={0}>Select a user</option>
+                        {users.length > 0 ?
+                            users.map((user) => (
+                                <option value={user.id} key={user.id}>{user.name}</option>
+                            )) : <option value={0}>No user was found</option>}
                     </select>
                     {errors && errors.owner && <p className='error-box'>{errors.owner}</p>}
                     
