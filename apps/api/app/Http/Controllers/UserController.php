@@ -16,7 +16,7 @@ class UserController extends Controller
         $user = User::where("email", $request->email)->first();
         if ($user || Hash::check($request->password, $user->password)) {
             $token = $user->createToken('api-token')->plainTextToken;
-            return response()->json(['token' => $token, 'status' => 200], 200);
+            return response()->json(['token' => $token, 'name' =>$user->name, 'status' => 200], 200);
         }
         return response()->json(['errors' => 'The provided credentials are incorrect.', 'status' => 401], 401);
     }
@@ -118,7 +118,18 @@ class UserController extends Controller
 
     public function get_users()
     {
-        $users = User::pluck('name', 'id');
+        $users = User::select('name', 'id', 'email')->get();
+        if (count($users) == 0) {
+            return response()->json(["error" => "No users were found", "status" => 404], 404);
+        }
+        return response()->json(["data" => $users, "status" => 200], 200);
+
+    }
+
+    public function get_single_user(string $id)
+    {
+        $id = (int) $id;
+        $users = User::select('name', 'id', 'email')->where('id', $id)->get();
         if (count($users) == 0) {
             return response()->json(["error" => "No users were found", "status" => 404], 404);
         }

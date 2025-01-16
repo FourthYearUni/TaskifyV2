@@ -41,9 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // Users
-
     Route::group(['middleware' => 'guard'], function () {
         Route::get('/users', [Users::class, 'get_users']);
+        Route::get('/users/single/{id}', [Users::class, 'get_single_user']);
     });
 });
 // Open actions
