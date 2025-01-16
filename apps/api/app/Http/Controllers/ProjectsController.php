@@ -27,7 +27,10 @@ class ProjectsController extends Controller
     public function get_single(string $id): JsonResponse
     {
         $id = (int) $id;
-        $project = Projects::where('id', $id)->get()->first();
+        $project = Projects::where('projects.id', $id)
+            ->join('users', 'projects.owner', '=', 'users.id')
+            ->select('users.name as owner', 'projects.name as name', 'description', 'deadline', 'projects.id as id', 'complete')
+            ->get()->first();
 
         if (!$project) {
             return response()->json(['error' => 'Project not found', 'status' => 404], 404);
@@ -89,7 +92,10 @@ class ProjectsController extends Controller
 
     public function get_all(): JsonResponse
     {
-        $projects = DB::table('projects')->orderBy('deadline')->get();
+        $projects = DB::table('projects')
+            ->join('users', 'projects.owner', '=', 'users.id')
+            ->select('users.name as owner', 'projects.name as name', 'description', 'deadline', 'projects.id as id', 'complete')
+            ->orderBy('deadline')->get();
         if (count($projects) == 0) {
             return response()->json(['error' => 'No projects found', 'status' => 404], 404);
         }

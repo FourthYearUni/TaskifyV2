@@ -12,11 +12,11 @@ import '../../assets/css/forms.css';
 
 import Nav from '../../components/Nav';
 import { CreateTask } from '../../api/tasks';
-import { GetAllProjects } from '../../api/projects';
 
 // Redux
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchProjects } from '../../redux/slices/project';
+import { fetchUsers } from '../../redux/slices/user';
 import { useSelector } from 'react-redux';
 
 
@@ -36,7 +36,7 @@ const AddTask = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const projects = useSelector((state: RootState) => state.projects.projects);
-
+    const users = useSelector((state: RootState) => state.users.users);
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
             ...formData,
@@ -63,6 +63,7 @@ const AddTask = () => {
 
     useEffect(() => {
         dispatch(fetchProjects());
+        dispatch(fetchUsers());
     }, [dispatch])
 
     console.log("Projects: ", projects);
@@ -87,6 +88,7 @@ const AddTask = () => {
                     {/* Priority */}
                     <label htmlFor="priority">Priority</label>
                     <select name="priority" id="priority" onChange={(e) => handleOnChange(e)}>
+                        <option value={0}>Select a priority</option>
                         <option value={1}>Low</option>
                         <option value={2}>Medium</option>
                         <option value={3}>High</option>
@@ -96,21 +98,23 @@ const AddTask = () => {
 
                     {/* user */}
                     <label htmlFor="priority">User</label>
-                    <select name="user_id" id="priority" onChange={(e) => handleOnChange(e)}>
-                        <option value={1}>Low</option>
-                        <option value={2}>Medium</option>
-                        <option value={3}>High</option>
-                        <option value={4}>Urgent</option>
+                    <select itemType="number" name="assigned_to" id="priority" onChange={(e) => handleOnChange(e)}>
+                        <option value={0}>Select a user</option>
+                        {users.length > 0 ?
+                            users.map((user) => (
+                                <option value={user.id} key={user.id}>{user.name}</option>
+                            )) : <option value={0}>No user was found</option>}
                     </select>
                     {errors && errors.user_id && <p className='error-box'>{errors.user_id}</p>}
 
                     {/* Project */}
                     <label htmlFor="project">Project</label>
-                    <select itemType="number" name="project" id="priority" onChange={(e) => handleOnChange(e)}>
+                    <select itemType="number" name="project_id" id="priority" onChange={(e) => handleOnChange(e)}>
+                        <option value={0}>Select a project</option>
                         {projects.length > 0 ?
                             projects.map((project) => (
                                 <option value={project.id} key={project.id}>{project.name}</option>
-                            )) : <option value={0}>No project was selected</option>}
+                            )) : <option value={0}>No project was found</option>}
                     </select>
                     {errors && errors.project && <p className='error-box'>{errors.project}</p>}
 

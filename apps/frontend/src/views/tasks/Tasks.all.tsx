@@ -43,6 +43,9 @@ const AllTasks = () => {
                     <div className="container-body">
 
                         <p className="greeting">
+                            Welcome back,  {localStorage.getItem('taskify-username')}!  &#128075;
+                        </p>
+                        <p className="greeting">
                             No tasks found &#128204;
                         </p>
                         <a href="/tasks/create"><i className="fas fa-plus" /> Add a task</a>

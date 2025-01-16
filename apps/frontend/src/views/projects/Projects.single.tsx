@@ -34,12 +34,13 @@ const SingleProject = () => {
     const deleteHandler = (e: ReactMouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
         console.log("Deleting project with id: ", id);
-        // dispatch(deleteProject(id)).then(() => {
-        //     // window.location.href = '/projects';
-        //     navigate('/projects');
-        //  });
         dispatch(deleteProject(id));
         navigate('/projects');
+    }
+
+    const handleRedirect = (e, route: string) => {
+        e.preventDefault();
+        navigate(route);
     }
     if (projects.length == 0) {
         return (
@@ -91,28 +92,28 @@ const SingleProject = () => {
                         {loading == true ? 'Loading ...' : project.name} &#128204;
                     </p>
                     <p className="date">Due, {date}</p>
-                    <a className="item-links" href="/projects/single/{{$project->id}}">
+                  
                         <div className="item">
                             <div className="item-body" style={{ flexDirection: "column" }}>
                                 <h3>Description</h3>
                                 <div className="farleft">
                                     <p>{project.description}</p>
                                     <div className="bottom">
-                                        <p>PM: @user_{project.owner}</p>
+                                        <p>Project Manager: @{project.owner}</p>
                                     </div>
                                 </div>
 
 
-                                <div className="action">
-                                        <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, project.id)}>
-                                            <i className='fas fa-trash fa-trash-alt' /> Delete
-                                        </button>
+                            <div className="action">
+                                <form>
+                                    <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, project.id)}> <i className='fas fa-trash' style={{ color: "white" }} /> Delete</button>
+                                    <button className='btn-delete' style={{ marginLeft: "-10%", marginTop: "1%" }} onClick={(e) => handleRedirect(e, `/projects/edit/${project.id}`)}><i className='fas fa-pen' style={{ color: "white" }} /> Edit</button>
+                                </form>
 
-                                    <a href={`/projects/edit/${project.id}`} >Edit</a>
-                                </div>
+                            </div>
                             </div>
                         </div>
-                    </a>
+                    {/* </a> */}
                 </div>
 
             </div>
