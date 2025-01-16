@@ -16,6 +16,7 @@ import { fetchTasks, } from '../../redux/slices/task';
 // Components and styles
 import Nav from '../../components/Nav';
 import '../../assets/css/styles.css';
+import PaginatedBox from '../../components/Pagination';
 
 
 const AllTasks = () => {
@@ -70,30 +71,33 @@ const AllTasks = () => {
                     </p>
                     <a href="/tasks/create"><i className="fas fa-plus" /> Add a task</a>
                     <p className="date">Today, {date}</p>
-                    {loading == false ? tasks.map(task =>
-                        <span key={task.id} className="task-links" onClick={() => handleRedirect(`/tasks/${task.id}`)}>
-                            <div className="item">
-                                <div className="item-body">
-                                    <div className="farleft">
-                                        <p>{task.title}</p>
-                                        <p>{task.description ? task.description.slice(0, 10) : ''}...</p>
-
-                                    </div>
-                                    <div className="farright">
-                                        <p>{`${new Date().toLocaleDateString()}`}</p>
-                                        <p>@{task.assigned_to}</p>
-                                        <p>P{task.priority}</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </span>
-                    ) : <span>Loading ...</span>}
+                    {loading == false ? <PaginatedBox items={RenderTasks()} /> : <span>Loading ...</span>}
                 </div>
 
             </div>
         </div>
     )
+
+    function RenderTasks() {
+        return tasks.map(task => <span key={task.id} className="task-links" onClick={() => handleRedirect(`/tasks/${task.id}`)}>
+            <div className="item">
+                <div className="item-body">
+                    <div className="farleft">
+                        <p>{task.title}</p>
+                        <p>{task.description ? task.description.slice(0, 10) : ''}...</p>
+
+                    </div>
+                    <div className="farright">
+                        <p>{`${new Date().toLocaleDateString()}`}</p>
+                        <p>@{task.assigned_to}</p>
+                        <p>P{task.priority}</p>
+                    </div>
+
+                </div>
+            </div>
+        </span>
+        );
+    }
 }
 
 export default AllTasks;

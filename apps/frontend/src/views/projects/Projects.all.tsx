@@ -4,7 +4,7 @@
  */
 
 // Core libs
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -17,6 +17,7 @@ import { fetchProjects } from '../../redux/slices/project';
 // Components and styles
 import Nav from '../../components/Nav';
 import '../../assets/css/styles.css';
+import PaginatedBox from '../../components/Pagination';
 
 
 const AllProjects = () => {
@@ -57,6 +58,7 @@ const AllProjects = () => {
             </div>
         )
     }
+
     return (
         <div className="body">
 
@@ -72,29 +74,32 @@ const AllProjects = () => {
                     </p>
                     <a href="/projects/create"><i className="fas fa-plus" /> Add project</a>
                     <p className="date">Today, {date}</p>
-                    {loading == false ? projects.map(project =>
-                        <span key={project.id} className="project-links" onClick={() => handleRedirect(`/projects/${project.id}`)}>
-                            <div className="item">
-                                <div className="item-body">
-                                    <div className="farleft">
-                                        <p>{project.name}</p>
-                                        <p>{project.description ? project.description.slice(0, 10) : ''}</p>
-
-                                    </div>
-                                    <div className="farright">
-                                        {/* <p>{`${new Date().toLocaleDateString()}`}</p> */}
-                                        <p>@{project.owner}</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </span>
-                    ) : <span>Loading ...</span>}
+                    {loading == false ? <PaginatedBox items={GetProjectDivs()} /> : <span>Loading ...</span>}
                 </div>
 
             </div>
         </div>
     )
+
+    function GetProjectDivs() {
+        return projects.map(project => <span key={project.id} className="project-links" onClick={() => handleRedirect(`/projects/${project.id}`)}>
+            <div className="item">
+                <div className="item-body">
+                    <div className="farleft">
+                        <p>{project.name}</p>
+                        <p>{project.description ? project.description.slice(0, 10) : ''}</p>
+
+                    </div>
+                    <div className="farright">
+                        {/* <p>{`${new Date().toLocaleDateString()}`}</p> */}
+                        <p>@{project.owner}</p>
+                    </div>
+
+                </div>
+            </div>
+        </span>
+        );
+    }
 }
 
 export default AllProjects;
