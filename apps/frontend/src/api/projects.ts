@@ -30,9 +30,9 @@ const UpdateProject = async (id: number, data: unknown) => {
 }
 
 const SearchProjects = async (data: string) => {
-    const url = `${env.API_URL}/projects/search`;
-    const response = await fetcher(url, 'POST', data);
-    return response.data.data;
+    const url = `${env.API_URL}/projects/search/${data}`;
+    const response = await fetcher(url, 'GET', undefined);
+    return response;
 }
 
 const GetSingleProject = async (id: number) => {

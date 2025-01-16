@@ -7,7 +7,7 @@
 import { ActionReducerMapBuilder, AsyncThunk, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Helpers and utilities
-import { GetAllTasks, GetSingleTask, DeleteTask } from '../../api/tasks';
+import { GetAllTasks, GetSingleTask, DeleteTask, SearchTasks } from '../../api/tasks';
 
 // Interfaces
 export interface Task {
@@ -16,8 +16,8 @@ export interface Task {
     description: string;
     priority: number;
     deadline: Date;
-    user_id: number;
-    project: number;
+    assigned_to: number;
+    project_id: number;
     created_at: string;
     updated_at: string;
 };
@@ -53,6 +53,18 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id: number
     return response;
 });
 
+export const fetchSearchTasks = createAsyncThunk<Task[], string>('tasks/search', async (search: string) => {
+    const response = await SearchTasks(search);
+    if (response.status == 200) {
+        console.log("Thunk results", response)
+        return response.data as Task[]
+    }
+    alert("Search returned no results");
+    window.location.reload()
+    return [] as Task[];
+})
+
+
 // Helper function for creating cases for the async thunks.
 const caseCreator = (
     // Fx should any async thunk with the type of any because they can be very different.
@@ -62,10 +74,15 @@ const caseCreator = (
     invalidate: boolean = false
 ) => {
     builder.addCase(fx.fulfilled, (state: TaskState, action: PayloadAction<Task | Task[]>) => {
-        if (invalidate) { 
+        if (invalidate == true) {
             state.tasks = [];
         }
-        state.tasks.push(action.payload as Task)
+
+        if (Array.isArray(action.payload)) {
+            state.tasks = action.payload;
+        } else {
+            state.tasks.push(action.payload);
+        }
         state.loading = false;
     });
     builder.addCase(fx.pending, (state: TaskState) => {
@@ -99,6 +116,7 @@ const taskSlice = createSlice({
         });
         caseCreator(fetchSingleTask, 'An error occurred while fetching tasks', builder, true);
         caseCreator(deleteTask, 'An error occurred while deleting task', builder);
+        caseCreator(fetchSearchTasks, 'An error occured while serching tasks', builder, true);
     }
 });
 

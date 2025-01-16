@@ -5,7 +5,7 @@
  */
 import { AsyncThunk, createSlice, createAsyncThunk, PayloadAction, ActionReducerMapBuilder } from '@reduxjs/toolkit';
 
-import { GetAllProjects, GetSingleProject, DeleteProject } from '../../api/projects';
+import { GetAllProjects, GetSingleProject, DeleteProject, SearchProjects } from '../../api/projects';
 
 interface Project { 
     id: number;
@@ -59,7 +59,6 @@ const caseCreator = (
 
 export const fetchProjects = createAsyncThunk<Project[]>('projects/fetchProjects', async () => {
     const response = await GetAllProjects();
-    console.log("Response obtained is", response)
     if (response.status == 200) {
         console.log("Thunk results", response)
         return response.data as Project[]
@@ -75,6 +74,17 @@ export const deleteProject = createAsyncThunk('projects/deleteProject', async (i
     return response;
 });
 
+export const fetchSearchProjects = createAsyncThunk<Project[], string>('projects/search', async (search: string) => { 
+    const response = await SearchProjects(search);
+    if (response.status == 200) {
+        console.log("Thunk results", response)
+        return response.data as Project[]
+    }
+    alert("Search returned no results");
+    window.location.reload()
+    return [] as Project[];
+})
+
 const projectSlice = createSlice({
     name: 'projects',
     initialState: InitialState,
@@ -83,6 +93,7 @@ const projectSlice = createSlice({
         caseCreator(fetchProjects, 'An error occurred while fetching projects', builder);
         caseCreator(fetchSingleProject, 'An error occurred while fetching project', builder, true);
         caseCreator(deleteProject, 'An error occurred while deleting project', builder);
+        caseCreator(fetchSearchProjects, 'An error Occured search', builder, true);
     }
 })
 

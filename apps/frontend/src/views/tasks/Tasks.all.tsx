@@ -4,13 +4,13 @@
  */
 
 // Core libs
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 // Helpers and utilities
 import { RootState, AppDispatch } from '../../redux/store';
-import { fetchTasks, } from '../../redux/slices/task';
+import { fetchTasks, fetchSearchTasks } from '../../redux/slices/task';
 
 
 // Components and styles
@@ -23,6 +23,7 @@ const AllTasks = () => {
     const date = new Date().toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     const tasks = useSelector((state: RootState) => state.tasks.tasks);
     const loading = useSelector((state: RootState) => state.tasks.loading);
+    const [search, setSearch] = useState("");
 
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
@@ -56,15 +57,20 @@ const AllTasks = () => {
             </div>
         )
     }
+    const handleSearch = (e) => {
+        e.preventDefault();
+        dispatch(fetchSearchTasks(search));
+
+    }
     return (
         <div className="body">
 
             <div className="container">
                 <Nav />
                 <div className="container-body">
-                    <form className="search" action="/tasks/search" method="post">
-                        <input placeholder="Search tasks" type="text" name="search" />
-                        <button type="submit"> Search</button>
+                    <form className="search">
+                        <input placeholder="Search projects" type="text" name="search" onChange={(e) => setSearch(e.target.value)} />
+                        <button type="submit" onClick={(e) => handleSearch(e)}> Search</button>
                     </form>
                     <p className="greeting">
                         Welcome back,  Alain Christian!  &#128075;

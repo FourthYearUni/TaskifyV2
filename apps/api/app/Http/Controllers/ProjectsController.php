@@ -108,7 +108,7 @@ class ProjectsController extends Controller
     {
         $search = filter_var($search, FILTER_SANITIZE_STRING);
         $projects = Projects::where('name', 'like', '%' . $search . '%')->get();
-        if (!$projects) {
+        if ($projects->count() == 0) {
             return response()->json(['Error' => 'No projects found', 'status' => 404], 404);
         }
         return response()->json(

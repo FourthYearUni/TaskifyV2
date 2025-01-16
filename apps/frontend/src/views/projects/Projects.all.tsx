@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 
 // Helpers and utilities
 import { RootState, AppDispatch } from '../../redux/store';
-import { fetchProjects } from '../../redux/slices/project';
+import { fetchProjects, fetchSearchProjects } from '../../redux/slices/project';
 
 
 // Components and styles
@@ -24,6 +24,7 @@ const AllProjects = () => {
     const date = new Date().toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     const projects = useSelector((state: RootState) => state.projects.projects);
     const loading = useSelector((state: RootState) => state.projects.loading);
+    const [search, setSearch] = useState("");
 
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
@@ -36,6 +37,12 @@ const AllProjects = () => {
     const handleRedirect = (route: string) => {
         navigate(route);
     };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        dispatch(fetchSearchProjects(search));
+
+    }
 
     if (projects.length == 0) {
         return (
@@ -65,9 +72,9 @@ const AllProjects = () => {
             <div className="container">
                 <Nav />
                 <div className="container-body">
-                    <form className="search" action="/projects/search" method="post">
-                        <input placeholder="Search projects" type="text" name="search" />
-                        <button type="submit"> Search</button>
+                    <form className="search">
+                        <input placeholder="Search projects" type="text" name="search" onChange={(e) => setSearch(e.target.value)}/>
+                        <button type="submit" onClick={(e) => handleSearch(e)}> Search</button>
                     </form>
                     <p className="greeting">
                         Welcome back,  {localStorage.getItem('taskify-username')}!  &#128075;
