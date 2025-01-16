@@ -100,7 +100,7 @@ const UpdateTaskView = () => {
 
                     {/* user */}
                     <label htmlFor="priority">User</label>
-                    <select itemType="number" name="user_id" id="priority" onChange={(e) => handleOnChange(e)}>
+                    <select itemType="number" name="assigned_to" id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={0}>Select a user</option>
                         {users.length > 0 ?
                             users.map((user) => (

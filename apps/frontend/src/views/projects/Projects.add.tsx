@@ -51,7 +51,7 @@ const AddProject = () => {
             // TODO: Handle the response with a toast or alert
             if (response.status === 201) {
                 alert('Project created successfully');
-                navigate('/');
+                navigate('/projects');
             } else {
                 console.log("Setting errors: ", response.errors);
                 setErrors(response.errors);

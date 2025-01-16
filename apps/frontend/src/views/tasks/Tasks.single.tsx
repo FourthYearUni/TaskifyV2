@@ -27,7 +27,7 @@ const SingleTask = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("Dispatching fetchSingleTask");
+        console.log("Dispatching fetchSingleTask", id);
         dispatch(fetchSingleTask(Number(id)));
     }, [dispatch, id]);
 
@@ -35,7 +35,7 @@ const SingleTask = () => {
         e.preventDefault();
         console.log("Deleting task with id: ", id);
         dispatch(deleteTask(id));
-        navigate('/');
+        navigate('/tasks');
     }
 
     const handleRedirect = (e, route: string) => {
@@ -98,7 +98,7 @@ const SingleTask = () => {
                                 <h3>Description</h3>
                                 <div className="farleft">
                                     <p>{task.description}</p>
-
+                                    <p>@{task.assigned_to}</p>
                                 </div>
                                 <div className="action">
                                     <form>

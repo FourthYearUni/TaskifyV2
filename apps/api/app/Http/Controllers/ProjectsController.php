@@ -21,7 +21,8 @@ class ProjectsController extends Controller
         'name' => 'nullable|string|max:100',
         'description' => 'nullable|string|max:255',
         'deadline' => 'nullable|string',
-        'complete' => 'nullable|boolean'
+        'complete' => 'nullable|boolean',
+        'owner' => 'nullable|integer'
     ];
 
     public function get_single(string $id): JsonResponse

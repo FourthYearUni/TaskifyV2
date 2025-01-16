@@ -10,6 +10,7 @@ const Nav = () => {
         if (exit) {
             localStorage.clear();
         }
+        console.log('redirecting')
         navigate(route);
     }
     return (
@@ -24,7 +25,7 @@ const Nav = () => {
                         <a onClick={(e) => handleRedirect(e, '/projects')}> <i className="fas fa-diagram-project" /> Projects</a>
                         <a onClick={(e) => handleRedirect(e, '/tasks')}> <i className="fas fa-list-check" /> Tasks</a>
                     </>) : (<>
-                        <a onClick={(e) => handleRedirect(e, '/login')}> <i className="fas fa-angle-double-right" /> Login</a>
+                        <a onClick={(e) => handleRedirect(e, '/')}> <i className="fas fa-angle-double-right" /> Login</a>
                         <a onClick={(e) => handleRedirect(e, '/signup')}> <i className="fas fa-plus" /> Signup</a></>
                 )}
 

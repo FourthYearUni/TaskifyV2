@@ -25,12 +25,16 @@ class TasksController extends Controller
         'priority' => 'nullable|integer|min:1|max:5',
         'deadline' => 'nullable|string',
         'complete' => 'nullable|boolean',
-        'project_id' => 'nullable|integer'
+        'project_id' => 'nullable|integer',
+        'assigned_to' => 'nullable|integer'
     ];
     public function get(string $id): JsonResponse
     {
         $id = (int) $id;
-        $task = Task::where("id", $id)->get()->first();
+        $task = Task::where("tasks.id", $id)
+            ->join('users', 'tasks.assigned_to', '=', 'users.id')
+            ->select('title', 'description', 'priority', 'deadline','complete', 'users.name as assigned_to', 'project_id', 'tasks.id as id')
+            ->get()->first();
         if (!$task) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
@@ -39,7 +43,10 @@ class TasksController extends Controller
 
     public function get_all(): JsonResponse
     {
-        $tasks = DB::table('tasks')->orderBy('priority')->orderBy('deadline')->get();
+        $tasks = DB::table('tasks')
+            ->join('users', 'tasks.assigned_to', '=', 'users.id')
+            ->select('title', 'description', 'priority', 'deadline','complete', 'users.name as assigned_to', 'project_id', 'tasks.id as id')
+            ->orderBy('priority')->orderBy('deadline')->get();
         if (count($tasks) == 0) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
@@ -59,7 +66,7 @@ class TasksController extends Controller
         $task->deadline = $validateRequest['deadline'];
         $task->complete = false;
         $task->project_id = $validateRequest['project_id'];
-        $task->assigned_to = $validateRequest['assigned_to'];
+        $task->assigned_to = (int)$validateRequest['assigned_to'];
         $task->save();
 
         return response()->json(['data' => $task, 'status' => 201], 201);
@@ -68,7 +75,7 @@ class TasksController extends Controller
     public function update(Request $req, $id): JsonResponse
     {
         $valid_req = $req->validate($this->update_rules);
-        $data = array_filter(array_intersect_key($valid_req, array_flip(['title', 'description', 'priority', 'deadline'])), function ($val) {
+        $data = array_filter(array_intersect_key($valid_req, array_flip(['title', 'description', 'priority', 'deadline', 'assigned_to'])), function ($val) {
             return !is_null($val);
         });
         $update = Task::where('id', $id)->update($data);
@@ -94,7 +101,7 @@ class TasksController extends Controller
         $search = filter_var($search, FILTER_SANITIZE_STRING);
         $search = trim(string: $search);
         $data = Task::whereLike('title', "%" . $search . "%")->orderBy('priority')->orderBy('deadline')->paginate(5);
-        if (!$data.$data->count() == 0) {
+        if (!$data . $data->count() == 0) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
         return response()->json(['data' => $data, 'status' => 200], 200);

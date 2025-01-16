@@ -81,6 +81,7 @@ const AllTasks = () => {
                                     </div>
                                     <div className="farright">
                                         <p>{`${new Date().toLocaleDateString()}`}</p>
+                                        <p>@{task.assigned_to}</p>
                                         <p>P{task.priority}</p>
                                     </div>
 

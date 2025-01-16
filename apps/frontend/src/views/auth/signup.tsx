@@ -36,7 +36,7 @@ const Signup = () => {
             // TODO: Handle the response with a toast or alert
             console.log(response);
             if (response.status === 200) {
-                alert('Project created successfully');
+                alert('Signed up successfully');
                 window.location.href = "/";
             } else {
                 alert('Email is already used');
