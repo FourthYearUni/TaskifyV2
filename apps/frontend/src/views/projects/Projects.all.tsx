@@ -45,7 +45,10 @@ const AllProjects = () => {
                     <div className="container-body">
 
                         <p className="greeting">
-                            Loading ... &#128204;
+                            Welcome back,  {localStorage.getItem('taskify-username')}!  &#128075;
+                        </p>
+                        <p className="greeting">
+                            No Projects found &#128204;
                         </p>
                         <a href="/projects/create"><i className="fas fa-plus" /> Add project</a>
                     </div>
@@ -65,7 +68,7 @@ const AllProjects = () => {
                         <button type="submit"> Search</button>
                     </form>
                     <p className="greeting">
-                        Welcome back,  Alain Christian!  &#128075;
+                        Welcome back,  {localStorage.getItem('taskify-username')}!  &#128075;
                     </p>
                     <a href="/projects/create"><i className="fas fa-plus" /> Add project</a>
                     <p className="date">Today, {date}</p>

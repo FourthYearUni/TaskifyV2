@@ -34,6 +34,7 @@ const Login = () => {
             // TODO: Handle the response with a toast or alert
             if (response.status === 200) {
                 localStorage.setItem('taskify-auth-token', response.token);
+                localStorage.setItem('taskify-username', response.name);
                 alert('Logged in successfully');
                 window.location.href = "/tasks";
                 console.log("Attempted a redirection");

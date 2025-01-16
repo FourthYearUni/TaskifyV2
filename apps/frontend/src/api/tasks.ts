@@ -34,7 +34,7 @@ const SearchTasks = async (data: string) => {
 }
 
 const GetSingleTask = async (id: number) => { 
-    const url = `${env.API_URL}/tasks/${id}`;
+    const url = `${env.API_URL}/tasks/single/${id}`;
     const response = await fetcher(url, 'GET', '');
     console.log("Response: ", response);
     return response.data;

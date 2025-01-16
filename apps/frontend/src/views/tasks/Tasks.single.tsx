@@ -37,6 +37,11 @@ const SingleTask = () => {
         dispatch(deleteTask(id));
         navigate('/');
     }
+
+    const handleRedirect = (e, route: string) => {
+        e.preventDefault();
+        navigate(route);
+    }
     if (tasks.length == 0) {
         return (
             <div className="body">
@@ -98,9 +103,9 @@ const SingleTask = () => {
                                 <div className="action">
                                     <form>
                                         <button type="submit" className="btn-delete" onClick={(e) => deleteHandler(e, task.id)}> <i className='fas fa-trash' style={{color: "white"}} /> Delete</button>
+                                        <button className='btn-delete' style={{ marginLeft: "-10%", marginTop: "1%" }} onClick={(e) => handleRedirect(e, `/tasks/edit/${task.id}`)}><i className='fas fa-pen' style={{ color: "white" }} /> Edit</button>
                                     </form>
 
-                                    <a href={`/tasks/edit/${task.id}`} style={{ marginLeft: "5%" }}>&#128221; Edit</a>
                                 </div>
                             </div>
                         </div>

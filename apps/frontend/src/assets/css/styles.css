@@ -189,11 +189,11 @@ li {
 }
 
 .btn-delete{
-    margin-right: 30%;
+    margin-right: 20%;
     /* padding: 25%; */
     border-radius: 10%;
-    width: 10%;
-    height: 100%;
+    width: 7%;
+    height: 70%;
     background-color: lightcoral;
     cursor: hand;
     color: white;

@@ -3,15 +3,22 @@
  * @description: This file contains the view for the Create Projects page
  */
 
-import { useState } from 'react';
+// Core libs
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 
+// Styles
 import '../../assets/css/styles.css';
 import '../../assets/css/forms.css';
 
+// Components and utilities
 import Nav from '../../components/Nav';
 import { UpdateProject } from '../../api/projects';
 
+// Redux
+import { RootState, AppDispatch } from '../../redux/store';
+import { fetchUsers } from '../../redux/slices/user';
 interface Errors {
     name?: string;
     description?: string;
@@ -22,8 +29,11 @@ interface Errors {
 const UpdateProjectView = () => {
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState<Errors>({});
-    const { id } = useParams<{ id: string }>();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+
+    const { id } = useParams<{ id: string }>();
+    const users = useSelector((state: RootState) => state.users.users);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
@@ -50,6 +60,10 @@ const UpdateProjectView = () => {
         });
     }
 
+    useEffect(() => { 
+        dispatch(fetchUsers())
+    }, [])
+
     console.log("Errors: ", errors);
     return (
         <div className="container">
@@ -70,15 +84,16 @@ const UpdateProjectView = () => {
                     {errors && errors.description && <p className='error-box'>{errors.description}</p>}
 
                     {/* user */}
-                    <label htmlFor="priority">Project manager</label>
-                    <select name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
-                        <option value={1}>Low</option>
-                        <option value={2}>Medium</option>
-                        <option value={3}>High</option>
-                        <option value={4}>Urgent</option>
+                    <label htmlFor="owner">Project manager</label>
+                    <select itemType="number" name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
+                        <option value={0}>Select a user</option>
+                        {users.length > 0 ?
+                            users.map((user) => (
+                                <option value={user.id} key={user.id}>{user.name}</option>
+                            )) : <option value={0}>No user was found</option>}
                     </select>
                     {errors && errors.owner && <p className='error-box'>{errors.owner}</p>}
-
+                    
                     {/* Deadline */}
                     <label htmlFor="deadline">Deadline </label>
                     <input type="datetime-local" name="deadline" onChange={(e) => handleOnChange(e)} />
