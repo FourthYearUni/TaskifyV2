@@ -15,6 +15,7 @@ class ProjectsController extends Controller
         'name' => 'required|string|max:100',
         'description' => 'required|string|max:255',
         'deadline' => 'required|date|after_or_equal:today',
+        'owner' => 'required|integer'
     ];
 
     protected $update_validation_rules = [
@@ -48,7 +49,7 @@ class ProjectsController extends Controller
         $project->deadline = $validateRequest['deadline'];
         $project->complete = false;
 
-        $project->owner = $req->user()->id;
+        $project->owner = $validateRequest['owner'];
 
         $project->save();
 
