@@ -72,7 +72,7 @@ const AddProject = () => {
             <div className="container-main">
                 <div className='form'>
 
-                    <p className="title">Task creation</p>
+                    <p className="title">Project creation</p>
                     
                     {/* name */}
                     <label htmlFor="name">Project name</label>

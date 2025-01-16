@@ -51,6 +51,7 @@ const UpdateProjectView = () => {
                 alert('Project updated successfully');
                 navigate(`/projects/${id}`);
             } else {
+                alert('Project update failed');
                 console.log("Setting errors: ", response.errors);
                 setErrors(response.errors);
             }
@@ -71,7 +72,7 @@ const UpdateProjectView = () => {
             <div className="container-main">
                 <div className='form'>
 
-                    <p className="title">Task creation</p>
+                    <p className="title">Project update</p>
 
                     {/* name */}
                     <label htmlFor="name">Project name</label>

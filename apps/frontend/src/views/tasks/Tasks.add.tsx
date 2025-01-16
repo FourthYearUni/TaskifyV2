@@ -52,6 +52,7 @@ const AddTask = () => {
                 alert('Task created successfully');
                 navigate('/tasks');
             } else {
+                alert('Task addition failed');
                 console.log("Setting errors: ", response.errors);
                 setErrors(response.errors);
             }
