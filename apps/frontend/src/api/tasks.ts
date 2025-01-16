@@ -28,9 +28,9 @@ const UpdateTask = async (id: number, data: unknown) => {
 }
 
 const SearchTasks = async (data: string) => { 
-    const url = `${env.API_URL}/tasks/search`;
-    const response = await fetcher(url, 'POST', data);
-    return response.data.data;
+    const url = `${env.API_URL}/tasks/search/${data}`;
+    const response = await fetcher(url, 'GET', undefined);
+    return response;
 }
 
 const GetSingleTask = async (id: number) => { 

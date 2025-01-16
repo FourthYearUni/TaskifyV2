@@ -100,8 +100,8 @@ class TasksController extends Controller
     {
         $search = filter_var($search, FILTER_SANITIZE_STRING);
         $search = trim(string: $search);
-        $data = Task::whereLike('title', "%" . $search . "%")->orderBy('priority')->orderBy('deadline')->paginate(5);
-        if (!$data . $data->count() == 0) {
+        $data = Task::whereLike('title', "%" . $search . "%")->orderBy('priority')->orderBy('deadline')->get();
+        if (!$data || $data->count() == 0) {
             return response()->json(["error" => "Task not found", "status" => 404], 404);
         }
         return response()->json(['data' => $data, 'status' => 200], 200);
