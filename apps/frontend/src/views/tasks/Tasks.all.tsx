@@ -97,6 +97,7 @@ const AllTasks = () => {
                         <p>{`${new Date().toLocaleDateString()}`}</p>
                         <p>@{task.assigned_to}</p>
                         <p>P{task.priority}</p>
+                        <p>{task.complete ? "Complete" : "Incomplete"}</p>
                     </div>
 
                 </div>

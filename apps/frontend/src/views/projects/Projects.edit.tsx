@@ -19,6 +19,7 @@ import { UpdateProject } from '../../api/projects';
 // Redux
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchUsers } from '../../redux/slices/user';
+import { fetchSingleProject } from '../../redux/slices/project';
 interface Errors {
     name?: string;
     description?: string;
@@ -34,6 +35,7 @@ const UpdateProjectView = () => {
 
     const { id } = useParams<{ id: string }>();
     const users = useSelector((state: RootState) => state.users.users);
+    const project = useSelector((state: RootState) => state.projects.projects)[0];
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
@@ -63,8 +65,12 @@ const UpdateProjectView = () => {
 
     useEffect(() => { 
         dispatch(fetchUsers())
+        if (!project) {
+            dispatch(fetchSingleProject(Number(id)));
+        }
     }, [])
 
+   
     console.log("Errors: ", errors);
     return (
         <div className="container">
@@ -76,17 +82,17 @@ const UpdateProjectView = () => {
 
                     {/* name */}
                     <label htmlFor="name">Project name</label>
-                    <input type="text" name="name" id="title" onChange={(e) => handleOnChange(e)} />
+                    <input type="text" name="name" id="title" placeholder={project.name} onChange={(e) => handleOnChange(e)} />
                     {errors && errors.name && <p className='error-box'>{errors.name}</p>}
 
                     {/* Description */}
                     <label htmlFor="description">Description</label>
-                    <textarea name="description" id="description" onChange={(e) => handleOnChange(e)}></textarea>
+                    <textarea name="description" id="description" placeholder={project.description} onChange={(e) => handleOnChange(e)}></textarea>
                     {errors && errors.description && <p className='error-box'>{errors.description}</p>}
 
                     {/* user */}
                     <label htmlFor="owner">Project manager</label>
-                    <select itemType="number" name="owner" id="priority" onChange={(e) => handleOnChange(e)}>
+                    <select itemType="number" name="owner" id="priority" defaultValue={project.owner} onChange={(e) => handleOnChange(e)}>
                         <option value={0}>Select a user</option>
                         {users.length > 0 ?
                             users.map((user) => (

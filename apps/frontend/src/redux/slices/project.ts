@@ -77,7 +77,7 @@ export const deleteProject = createAsyncThunk('projects/deleteProject', async (i
 export const fetchSearchProjects = createAsyncThunk<Project[], string>('projects/search', async (search: string) => { 
     const response = await SearchProjects(search);
     if (response.status == 200) {
-        console.log("Thunk results", response)
+        alert(`Search returned ${response.data.length} results`)
         return response.data as Project[]
     }
     alert("Search returned no results");

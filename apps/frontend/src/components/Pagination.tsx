@@ -9,7 +9,7 @@ const PaginatedBox = ({ items }: { items: any[] }) => {
     const startIndex = (page - 1) * count;
     const displayedItems = items.slice(startIndex, startIndex + count);
 
-    const handlePage = (event, value) => {
+    const handlePage = (_event, value) => {
         setPage(value);
     }
 

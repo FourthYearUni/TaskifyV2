@@ -20,6 +20,7 @@ export interface Task {
     project_id: number;
     created_at: string;
     updated_at: string;
+    complete: boolean;
 };
 
 interface TaskState {
@@ -56,7 +57,7 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id: number
 export const fetchSearchTasks = createAsyncThunk<Task[], string>('tasks/search', async (search: string) => {
     const response = await SearchTasks(search);
     if (response.status == 200) {
-        console.log("Thunk results", response)
+        alert(`Search returned ${response.data.length} results`)
         return response.data as Task[]
     }
     alert("Search returned no results");

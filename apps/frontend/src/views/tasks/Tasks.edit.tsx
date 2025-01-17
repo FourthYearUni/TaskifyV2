@@ -39,7 +39,8 @@ const UpdateTaskView = () => {
     const { id } = useParams<{ id: string }>();
     const projects = useSelector((state: RootState) => state.projects.projects);
     const users = useSelector((state: RootState) => state.users.users);
-
+    const task = useSelector((state: RootState) => state.tasks.tasks).filter((task) => task.id == Number(id))[0];
+   
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLFormElement>) => {
         setFormData({
             ...formData,
@@ -80,12 +81,12 @@ const UpdateTaskView = () => {
 
                     {/* Title */}
                     <label htmlFor="title">Title</label>
-                    <input type="text" name="title" id="title" onChange={(e) => handleOnChange(e)} />
+                    <input type="text" name="title" id="title" placeholder={task.title}  onChange={(e) => handleOnChange(e)} />
                     {errors && errors.title && <p className='error-box'>{errors.title}</p>}
 
                     {/* Description */}
                     <label htmlFor="description">Description</label>
-                    <textarea name="description" id="description" onChange={(e) => handleOnChange(e)}></textarea>
+                    <textarea name="description" id="description" placeholder={task.description} onChange={(e) => handleOnChange(e)}></textarea>
                     {errors && errors.description && <p className='error-box'>{errors.description}</p>}
 
                     {/* Priority */}
@@ -111,7 +112,7 @@ const UpdateTaskView = () => {
 
                     {/* Project */}
                     <label htmlFor="project">Project</label>
-                    <select itemType="number" name="project" id="priority" onChange={(e) => handleOnChange(e)}>
+                    <select itemType="number" name="project"  id="priority" onChange={(e) => handleOnChange(e)}>
                         <option value={0}>Select a project</option>
                         {projects.length > 0 ?
                             projects.map((project) => (
@@ -124,7 +125,9 @@ const UpdateTaskView = () => {
                     <label htmlFor="deadline">Deadline </label>
                     <input type="datetime-local" name="deadline" onChange={(e) => handleOnChange(e)} />
                     {errors && errors.deadline && <p className='error-box'>{errors.deadline}</p>}
-
+                    {/* Completion */}
+                    <label htmlFor="complete">Is Task complete</label>
+                    <input  type="checkbox" id="complete" onChange={(e) => { setFormData({"complete": e.target.value == "on" ? true : false})}} />
                     <button type="submit" className='btn-submit' onClick={(e) => handleSubmit(e)}>Update a task</button>
 
                 </div>

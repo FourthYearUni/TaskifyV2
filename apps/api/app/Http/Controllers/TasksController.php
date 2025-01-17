@@ -75,7 +75,7 @@ class TasksController extends Controller
     public function update(Request $req, $id): JsonResponse
     {
         $valid_req = $req->validate($this->update_rules);
-        $data = array_filter(array_intersect_key($valid_req, array_flip(['title', 'description', 'priority', 'deadline', 'assigned_to'])), function ($val) {
+        $data = array_filter(array_intersect_key($valid_req, array_flip(['title', 'description', 'priority', 'deadline', 'assigned_to', 'complete'])), function ($val) {
             return !is_null($val);
         });
         $update = Task::where('id', $id)->update($data);

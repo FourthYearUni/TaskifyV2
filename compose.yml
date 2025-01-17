@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+       - "8000:8000"
+  ui:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    ports:
+     - "80:80"
