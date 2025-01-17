@@ -1,4 +1,20 @@
+
+<!-- add titles -->
+
 # Taskify version 2
+
+## Table of Contents
+
+1. [Infrastructure](#infrastructure)
+    1. [Backend](#backend)
+        1. [Authentication](#authentication)
+        2. [Authorization](#authorization)
+        3. [Rest API](#rest-api)
+    2. [UI](#ui)
+        1. [Structure](#structure)
+        2. [AuthX](#authx)
+        3. [Deployment](#deployment)
+    3. [Setup](#setup)
 
 A second installment of the taskify app. This system incorporates a way to manage tasks. Each task belongs to a particular project this allows for easy management especially with the organisation of tasks per project.
 
