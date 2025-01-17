@@ -99,6 +99,7 @@ const SingleTask = () => {
                                 <div className="farleft">
                                     <p>{task.description}</p>
                                     <p>@{task.assigned_to}</p>
+                                    <p>Project No: #{task.project_id}</p>
                                 </div>
                                 <div className="action">
                                     <form>
