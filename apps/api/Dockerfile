@@ -1,14 +1,43 @@
-FROM php:8.2-apache
+FROM public.ecr.aws/lts/ubuntu:20.04_stable
+
+ENV DEBIAN_FRONTEND=noninteractive
+
 
 WORKDIR /opt/app
 
-RUN apt-get update && apt-get install -y \
+COPY ./setup.sh /usr/local/bin/setup.sh
+RUN chmod +x /usr/local/bin/setup.sh
+
+RUN apt update
+
+RUN apt install -y \
+    lsb-release  \
+    ca-certificates  \
+    gnupg2 \
+    libmysqlclient-dev \
+    software-properties-common \
+    default-mysql-client \
+    && apt clean
+
+RUN add-apt-repository ppa:ondrej/php
+
+
+RUN apt-get install -y \
     libzip-dev \
     unzip \
     curl \
     git \
-    && docker-php-ext-install pdo pdo_mysql zip \
-    && docker-php-ext-enable pdo_mysql
+    php8.2 \
+    php8.2-cli \
+    php8.2-fpm \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-curl \
+    php8.2-zip \
+    php8.2-mysql \
+    php8.2-pdo \
+    php8.2-pdo-mysql \
+    zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -21,8 +50,8 @@ COPY . .
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN npm install
 RUN composer install
-
+# RUN php artisan migrate
 
 EXPOSE 8000
 
-ENTRYPOINT composer run dev
+ENTRYPOINT ["setup.sh"]

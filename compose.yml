@@ -1,13 +1,24 @@
 services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: nAdia123
+      MYSQL_DATABASE: taskify
+      MYSQL_USER: lara
+      MYSQL_PASSWORD: password_12
+
   api:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
     ports:
        - "8000:8000"
+    depends_on:
+       - mysql
   ui:
     build:
       context: ./apps/frontend
       dockerfile: Dockerfile
     ports:
-     - "80:80"
+       - "80:80"
